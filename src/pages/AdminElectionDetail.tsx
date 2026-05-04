@@ -54,7 +54,7 @@ const AdminElectionDetail = () => {
   if (!isAdmin) return <Navigate to="/" replace />;
 
   const updateStatus = async (status: string) => {
-    const { error } = await supabase.from("elections").update({ status }).eq("id", id!);
+    const { error } = await supabase.from("elections").update({ status: status as "draft" | "open" | "closed" }).eq("id", id!);
     if (error) toast.error(error.message); else { toast.success("Status updated"); load(); }
   };
 
