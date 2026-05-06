@@ -9,6 +9,10 @@ import { Card } from "@/components/ui/card";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { toast } from "sonner";
 import { Layout } from "@/components/Layout";
+import { Sparkles } from "lucide-react";
+
+const DEMO_EMAIL = "demo-admin@castvote.app";
+const DEMO_PASSWORD = "DemoAdmin#2026";
 
 const schema = z.object({
   email: z.string().trim().email().max(255),
