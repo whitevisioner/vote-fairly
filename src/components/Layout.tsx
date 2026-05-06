@@ -1,7 +1,8 @@
 import { Link, useNavigate } from "react-router-dom";
-import { Vote, LogOut, Shield, LayoutDashboard } from "lucide-react";
+import { Vote, LogOut, Shield, LayoutDashboard, Github, Mail } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/hooks/useAuth";
+import devLogo from "@/assets/developer-logo.png";
 
 export const Layout = ({ children }: { children: React.ReactNode }) => {
   const { user, isAdmin, signOut } = useAuth();
@@ -18,6 +19,9 @@ export const Layout = ({ children }: { children: React.ReactNode }) => {
             <span>BallotBox</span>
           </Link>
           <nav className="flex items-center gap-2">
+            <Button variant="ghost" size="sm" asChild>
+              <Link to="/about">About</Link>
+            </Button>
             {user ? (
               <>
                 <Button variant="ghost" size="sm" asChild>
@@ -39,8 +43,28 @@ export const Layout = ({ children }: { children: React.ReactNode }) => {
         </div>
       </header>
       <main className="flex-1">{children}</main>
-      <footer className="border-t py-6 text-center text-sm text-muted-foreground">
-        BallotBox — Secure voting for every community.
+      <footer className="border-t bg-card mt-12">
+        <div className="container mx-auto px-4 py-8 flex flex-col md:flex-row items-center justify-between gap-4">
+          <div className="flex items-center gap-3">
+            <img src={devLogo} alt="SK developer logo" className="h-12 w-12 rounded-full object-contain" />
+            <div className="text-sm">
+              <p className="font-semibold">Designed & developed by SK</p>
+              <p className="text-muted-foreground">Crafting secure web experiences.</p>
+            </div>
+          </div>
+          <div className="flex items-center gap-4 text-sm text-muted-foreground">
+            <Link to="/about" className="hover:text-primary">About</Link>
+            <a href="https://github.com" target="_blank" rel="noreferrer" className="hover:text-primary flex items-center gap-1">
+              <Github className="h-4 w-4" /> GitHub
+            </a>
+            <a href="mailto:hello@example.com" className="hover:text-primary flex items-center gap-1">
+              <Mail className="h-4 w-4" /> Contact
+            </a>
+          </div>
+        </div>
+        <div className="border-t py-3 text-center text-xs text-muted-foreground">
+          © {new Date().getFullYear()} BallotBox — Secure voting for every community.
+        </div>
       </footer>
     </div>
   );
