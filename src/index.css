@@ -44,8 +44,8 @@
 
     --radius: 0.6rem;
 
-    --gradient-civic: linear-gradient(135deg, hsl(222 76% 38%), hsl(222 80% 55%));
-    --shadow-civic: 0 10px 30px -10px hsl(222 76% 38% / 0.25);
+    --gradient-civic: linear-gradient(135deg, hsl(222 84% 32%), hsl(172 80% 40%));
+    --shadow-civic: 0 12px 40px -10px hsl(222 84% 32% / 0.3);
 
     --sidebar-background: 0 0% 98%;
     --sidebar-foreground: 240 5.3% 26.1%;
