@@ -16,7 +16,7 @@ export const Layout = ({ children }: { children: React.ReactNode }) => {
             <div className="h-8 w-8 rounded-md flex items-center justify-center" style={{ background: "var(--gradient-civic)" }}>
               <Vote className="h-5 w-5 text-primary-foreground" />
             </div>
-            <span>BallotBox</span>
+            <span>CastVote</span>
           </Link>
           <nav className="flex items-center gap-2">
             <Button variant="ghost" size="sm" asChild>
