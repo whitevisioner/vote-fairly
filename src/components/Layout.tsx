@@ -59,10 +59,10 @@ export const Layout = ({ children }: { children: React.ReactNode }) => {
           </div>
           <div className="flex items-center gap-4 text-sm text-muted-foreground">
             <Link to="/about" className="hover:text-primary">About</Link>
-            <a href="https://github.com" target="_blank" rel="noreferrer" className="hover:text-primary flex items-center gap-1">
+            <a href="https://github.com/kamblesandesh01" target="_blank" rel="noreferrer" className="hover:text-primary flex items-center gap-1">
               <Github className="h-4 w-4" /> GitHub
             </a>
-            <a href="mailto:hello@example.com" className="hover:text-primary flex items-center gap-1">
+            <a href="mailto:sandeshsanjaykamble52@gmail.com" className="hover:text-primary flex items-center gap-1">
               <Mail className="h-4 w-4" /> Contact
             </a>
           </div>

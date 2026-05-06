@@ -2,7 +2,7 @@ import { Layout } from "@/components/Layout";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import devLogo from "@/assets/developer-logo.png";
-import { Github, Mail, Globe, Code2, Languages, Target, Sparkles } from "lucide-react";
+import { Github, Mail, Linkedin, Code2, Languages, Target, Sparkles } from "lucide-react";
 
 const About = () => (
   <Layout>
@@ -126,14 +126,14 @@ const About = () => (
       <Card className="p-6">
         <h2 className="text-lg font-semibold mb-4 text-center">Get in touch</h2>
         <div className="flex flex-wrap justify-center gap-6 text-muted-foreground">
-          <a href="mailto:hello@example.com" className="hover:text-primary flex items-center gap-2">
+          <a href="mailto:sandeshsanjaykamble52@gmail.com" className="hover:text-primary flex items-center gap-2">
             <Mail className="h-4 w-4" /> Email
           </a>
-          <a href="https://github.com" target="_blank" rel="noreferrer" className="hover:text-primary flex items-center gap-2">
+          <a href="https://github.com/kamblesandesh01" target="_blank" rel="noreferrer" className="hover:text-primary flex items-center gap-2">
             <Github className="h-4 w-4" /> GitHub
           </a>
-          <a href="#" className="hover:text-primary flex items-center gap-2">
-            <Globe className="h-4 w-4" /> Website
+          <a href="https://www.linkedin.com/in/sandesh-sanjay-kamble/" target="_blank" rel="noreferrer" className="hover:text-primary flex items-center gap-2">
+            <Linkedin className="h-4 w-4" /> LinkedIn
           </a>
         </div>
       </Card>

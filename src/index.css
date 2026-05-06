@@ -4,48 +4,49 @@
 
 @layer base {
   :root {
-    --background: 210 40% 98%;
-    --foreground: 222 47% 11%;
+    /* Modern Authority palette */
+    --background: 220 14% 96%;          /* #F3F4F6 soft gray */
+    --foreground: 244 47% 12%;
 
-    --card: 0 0% 100%;
-    --card-foreground: 222 47% 11%;
+    --card: 0 0% 100%;                   /* pure white cards */
+    --card-foreground: 244 47% 12%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 222 47% 11%;
+    --popover-foreground: 244 47% 12%;
 
-    --primary: 222 84% 32%;
-    --primary-foreground: 180 100% 97%;
-    --primary-glow: 222 88% 50%;
+    --primary: 244 55% 34%;              /* #4338CA royal indigo */
+    --primary-foreground: 0 0% 100%;
+    --primary-glow: 244 60% 45%;
 
-    --secondary: 210 40% 94%;
-    --secondary-foreground: 222 47% 11%;
+    --secondary: 220 14% 92%;
+    --secondary-foreground: 244 47% 12%;
 
-    --muted: 210 40% 94%;
-    --muted-foreground: 215 16% 40%;
+    --muted: 220 14% 92%;
+    --muted-foreground: 220 10% 40%;
 
-    --accent: 172 80% 40%;
+    --accent: 158 84% 39%;               /* #10B981 emerald */
     --accent-foreground: 0 0% 100%;
 
-    --highlight: 152 76% 42%;
+    --highlight: 158 84% 39%;
     --highlight-foreground: 0 0% 100%;
 
     --destructive: 0 75% 50%;
-    --destructive-foreground: 210 40% 98%;
+    --destructive-foreground: 0 0% 100%;
 
-    --success: 142 71% 38%;
-    --success-foreground: 210 40% 98%;
+    --success: 158 84% 39%;
+    --success-foreground: 0 0% 100%;
 
     --warning: 38 92% 50%;
-    --warning-foreground: 222 47% 11%;
+    --warning-foreground: 244 47% 12%;
 
-    --border: 214 32% 88%;
-    --input: 214 32% 88%;
-    --ring: 222 76% 38%;
+    --border: 220 13% 88%;
+    --input: 220 13% 88%;
+    --ring: 244 55% 34%;
 
     --radius: 0.6rem;
 
-    --gradient-civic: linear-gradient(135deg, hsl(222 84% 32%), hsl(172 80% 40%));
-    --shadow-civic: 0 12px 40px -10px hsl(222 84% 32% / 0.3);
+    --gradient-civic: linear-gradient(135deg, hsl(244 55% 28%), hsl(244 55% 40%));
+    --shadow-civic: 0 12px 40px -10px hsl(244 55% 34% / 0.35);
 
     --sidebar-background: 0 0% 98%;
     --sidebar-foreground: 240 5.3% 26.1%;
