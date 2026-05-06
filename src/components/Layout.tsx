@@ -16,7 +16,7 @@ export const Layout = ({ children }: { children: React.ReactNode }) => {
             <div className="h-8 w-8 rounded-md flex items-center justify-center" style={{ background: "var(--gradient-civic)" }}>
               <Vote className="h-5 w-5 text-primary-foreground" />
             </div>
-            <span>BallotBox</span>
+            <span>CastVote</span>
           </Link>
           <nav className="flex items-center gap-2">
             <Button variant="ghost" size="sm" asChild>
@@ -46,9 +46,14 @@ export const Layout = ({ children }: { children: React.ReactNode }) => {
       <footer className="border-t bg-card mt-12">
         <div className="container mx-auto px-4 py-8 flex flex-col md:flex-row items-center justify-between gap-4">
           <div className="flex items-center gap-3">
-            <img src={devLogo} alt="SK developer logo" className="h-12 w-12 rounded-full object-contain" />
+            <img src={devLogo} alt="SK developer logo" className="h-12 w-12 rounded-full object-contain ring-2 ring-primary/20" />
             <div className="text-sm">
-              <p className="font-semibold">Designed & developed by SK</p>
+              <p className="font-semibold">
+                Designed & developed by{" "}
+                <Link to="/about" className="text-primary hover:text-accent underline-offset-2 hover:underline">
+                  Sandesh Sanjay Kamble
+                </Link>
+              </p>
               <p className="text-muted-foreground">Crafting secure web experiences.</p>
             </div>
           </div>
@@ -63,7 +68,7 @@ export const Layout = ({ children }: { children: React.ReactNode }) => {
           </div>
         </div>
         <div className="border-t py-3 text-center text-xs text-muted-foreground">
-          © {new Date().getFullYear()} BallotBox — Secure voting for every community.
+          © {new Date().getFullYear()} CastVote — Secure voting for every community.
         </div>
       </footer>
     </div>

@@ -9,6 +9,10 @@ import { Card } from "@/components/ui/card";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { toast } from "sonner";
 import { Layout } from "@/components/Layout";
+import { Sparkles } from "lucide-react";
+
+const DEMO_EMAIL = "demo-admin@castvote.app";
+const DEMO_PASSWORD = "DemoAdmin#2026";
 
 const schema = z.object({
   email: z.string().trim().email().max(255),
@@ -49,9 +53,55 @@ const Auth = () => {
     navigate("/dashboard");
   };
 
+  const handleDemoLogin = async () => {
+    setLoading(true);
+    let { error } = await supabase.auth.signInWithPassword({
+      email: DEMO_EMAIL,
+      password: DEMO_PASSWORD,
+    });
+    if (error) {
+      // Account doesn't exist yet — create it (auto-confirm is on)
+      const { error: signUpErr } = await supabase.auth.signUp({
+        email: DEMO_EMAIL,
+        password: DEMO_PASSWORD,
+        options: { data: { full_name: "Demo Admin" } },
+      });
+      if (signUpErr) { setLoading(false); toast.error(signUpErr.message); return; }
+      const retry = await supabase.auth.signInWithPassword({
+        email: DEMO_EMAIL,
+        password: DEMO_PASSWORD,
+      });
+      error = retry.error;
+    }
+    setLoading(false);
+    if (error) { toast.error(error.message); return; }
+    toast.success("Logged in as Demo Admin");
+    navigate("/admin");
+  };
+
   return (
     <Layout>
       <div className="container mx-auto px-4 py-16 max-w-md">
+        <Card className="p-6 mb-4 border-accent/40" style={{ background: "hsl(var(--accent) / 0.08)" }}>
+          <div className="flex items-start gap-3">
+            <div className="h-10 w-10 rounded-md flex items-center justify-center shrink-0" style={{ background: "var(--gradient-civic)" }}>
+              <Sparkles className="h-5 w-5 text-primary-foreground" />
+            </div>
+            <div className="flex-1">
+              <h2 className="font-semibold">Quick Demo Login</h2>
+              <p className="text-xs text-muted-foreground mb-3">
+                Instantly explore CastVote as a pre-seeded Admin — no typing required.
+              </p>
+              <Button onClick={handleDemoLogin} disabled={loading} className="w-full" style={{ background: "var(--gradient-civic)" }}>
+                {loading ? "Loading..." : "Enter Demo Mode (Admin)"}
+              </Button>
+              <p className="text-[11px] text-muted-foreground mt-2">
+                Email: <code>{DEMO_EMAIL}</code> · Password: <code>{DEMO_PASSWORD}</code>
+              </p>
+            </div>
+          </div>
+        </Card>
+
         <Card className="p-8">
           <h1 className="text-2xl font-bold mb-1 text-center">Voter Access</h1>
           <p className="text-sm text-muted-foreground text-center mb-6">Sign in or create your voting account</p>
