@@ -30,8 +30,11 @@ const Results = () => {
         const { data: cand } = await supabase.from("candidates").select("id,position_id,name").in("position_id", positionIds);
         setCandidates((cand ?? []) as Candidate[]);
       }
-      const { data: v } = await supabase.from("votes").select("position_id,candidate_id").eq("election_id", id);
+      const { data: v } = await supabase.from("votes").select("position_id,candidate_id,voter_id").eq("election_id", id);
       setVotes((v ?? []) as Vote[]);
+      setVotedCount(new Set((v ?? []).map((x: any) => x.voter_id)).size);
+      const { count } = await supabase.from("voter_list").select("id", { count: "exact", head: true }).eq("election_id", id);
+      setVoterCount(count ?? 0);
     };
     load();
 
