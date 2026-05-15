@@ -96,9 +96,12 @@ const Ballot = () => {
     const rows = positions.map((p) => ({
       election_id: id!, position_id: p.id, candidate_id: selections[p.id], voter_id: user.id,
     }));
-    const { error } = await supabase.from("votes").insert(rows);
+    const { data: inserted, error } = await supabase.from("votes").insert(rows).select("id,created_at");
     setSubmitting(false);
     if (error) { toast.error(error.message); return; }
+    if (inserted && inserted.length) {
+      setReceipt({ id: inserted[0].id.slice(0, 8).toUpperCase(), ts: inserted[0].created_at });
+    }
     setSubmitted(true);
   };
 
