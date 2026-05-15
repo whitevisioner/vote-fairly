@@ -15,6 +15,8 @@ const Results = () => {
   const [positions, setPositions] = useState<Position[]>([]);
   const [candidates, setCandidates] = useState<Candidate[]>([]);
   const [votes, setVotes] = useState<Vote[]>([]);
+  const [voterCount, setVoterCount] = useState(0);
+  const [votedCount, setVotedCount] = useState(0);
 
   useEffect(() => {
     if (!id) return;
