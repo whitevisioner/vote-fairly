@@ -53,9 +53,18 @@ const AdminElectionDetail = () => {
   if (!user) return <Navigate to="/auth" replace />;
   if (!isAdmin) return <Navigate to="/" replace />;
 
-  const updateStatus = async (status: string) => {
-    const { error } = await supabase.from("elections").update({ status: status as "draft" | "open" | "closed" }).eq("id", id!);
-    if (error) toast.error(error.message); else { toast.success("Status updated"); load(); }
+  const updateSchedule = async (start_at: string | null, end_at: string | null) => {
+    const { error } = await supabase.from("elections").update({ start_at, end_at }).eq("id", id!);
+    if (error) toast.error(error.message); else { toast.success("Schedule saved"); load(); }
+  };
+
+  const importCsv = async (file: File) => {
+    const text = await file.text();
+    const emails = text.split(/[\s,;\n]+/).map((s) => s.trim().toLowerCase()).filter((s) => s.includes("@"));
+    if (!emails.length) { toast.error("No valid emails found"); return; }
+    const rows = emails.map((email) => ({ election_id: id!, email, voting_code: randomCode() }));
+    const { error } = await supabase.from("voter_list").insert(rows);
+    if (error) toast.error(error.message); else { toast.success(`${emails.length} voters imported`); load(); }
   };
 
   const addPosition = async () => {
