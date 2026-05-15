@@ -11,7 +11,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "@/components/ui/select";
-import { Trash2, Upload, Download } from "lucide-react";
+import { Trash2, Upload, Download, Calendar } from "lucide-react";
 import { toast } from "sonner";
 
 const randomCode = () =>
@@ -56,6 +56,20 @@ const AdminElectionDetail = () => {
   const updateStatus = async (status: string) => {
     const { error } = await supabase.from("elections").update({ status: status as "draft" | "open" | "closed" }).eq("id", id!);
     if (error) toast.error(error.message); else { toast.success("Status updated"); load(); }
+  };
+
+  const updateSchedule = async (start_at: string | null, end_at: string | null) => {
+    const { error } = await supabase.from("elections").update({ start_at, end_at }).eq("id", id!);
+    if (error) toast.error(error.message); else { toast.success("Schedule saved"); load(); }
+  };
+
+  const importCsv = async (file: File) => {
+    const text = await file.text();
+    const emails = text.split(/[\s,;\n]+/).map((s) => s.trim().toLowerCase()).filter((s) => s.includes("@"));
+    if (!emails.length) { toast.error("No valid emails found"); return; }
+    const rows = emails.map((email) => ({ election_id: id!, email, voting_code: randomCode() }));
+    const { error } = await supabase.from("voter_list").insert(rows);
+    if (error) toast.error(error.message); else { toast.success(`${emails.length} voters imported`); load(); }
   };
 
   const addPosition = async () => {
@@ -131,7 +145,30 @@ const AdminElectionDetail = () => {
           <TabsList>
             <TabsTrigger value="positions">Positions & Candidates</TabsTrigger>
             <TabsTrigger value="voters">Voters</TabsTrigger>
+            <TabsTrigger value="schedule">Schedule</TabsTrigger>
           </TabsList>
+
+          <TabsContent value="schedule" className="space-y-4 mt-4">
+            <Card className="p-4">
+              <h3 className="font-semibold mb-3 flex items-center gap-2"><Calendar className="h-4 w-4" />Election schedule</h3>
+              <p className="text-sm text-muted-foreground mb-3">Set when voting opens and closes. Times are in your local timezone.</p>
+              <div className="grid md:grid-cols-2 gap-3">
+                <div>
+                  <Label>Start</Label>
+                  <Input type="datetime-local" defaultValue={election?.start_at ? new Date(election.start_at).toISOString().slice(0, 16) : ""} id="start_at" />
+                </div>
+                <div>
+                  <Label>End</Label>
+                  <Input type="datetime-local" defaultValue={election?.end_at ? new Date(election.end_at).toISOString().slice(0, 16) : ""} id="end_at" />
+                </div>
+              </div>
+              <Button className="mt-3" onClick={() => {
+                const s = (document.getElementById("start_at") as HTMLInputElement)?.value;
+                const e = (document.getElementById("end_at") as HTMLInputElement)?.value;
+                updateSchedule(s ? new Date(s).toISOString() : null, e ? new Date(e).toISOString() : null);
+              }}>Save schedule</Button>
+            </Card>
+          </TabsContent>
 
           <TabsContent value="positions" className="space-y-4 mt-4">
             <Card className="p-4">
@@ -191,8 +228,14 @@ const AdminElectionDetail = () => {
               <h3 className="font-semibold mb-2">Add approved voters</h3>
               <p className="text-sm text-muted-foreground mb-2">Paste emails (comma, space, or newline separated). A unique voting code is generated for each.</p>
               <Textarea rows={4} value={voterEmails} onChange={(e) => setVoterEmails(e.target.value)} placeholder="alice@example.com, bob@example.com" />
-              <div className="flex gap-2 mt-3">
+              <div className="flex gap-2 mt-3 flex-wrap">
                 <Button onClick={addVoters}><Upload className="h-4 w-4 mr-1.5" />Add voters</Button>
+                <Button asChild variant="secondary">
+                  <label className="cursor-pointer">
+                    <Upload className="h-4 w-4 mr-1.5" />Import CSV
+                    <input type="file" accept=".csv,.txt" className="hidden" onChange={(e) => e.target.files?.[0] && importCsv(e.target.files[0])} />
+                  </label>
+                </Button>
                 <Button variant="outline" onClick={exportCodes} disabled={voters.length === 0}><Download className="h-4 w-4 mr-1.5" />Export CSV</Button>
               </div>
             </Card>

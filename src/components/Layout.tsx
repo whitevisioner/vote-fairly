@@ -1,12 +1,19 @@
 import { Link, useNavigate } from "react-router-dom";
-import { Vote, LogOut, Shield, LayoutDashboard, Github, Mail } from "lucide-react";
+import { Vote, LogOut, Shield, LayoutDashboard, Github, Mail, Moon, Sun } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/hooks/useAuth";
+import { useEffect, useState } from "react";
 import devLogo from "@/assets/developer-logo.png";
 
 export const Layout = ({ children }: { children: React.ReactNode }) => {
   const { user, isAdmin, signOut } = useAuth();
   const navigate = useNavigate();
+  const [dark, setDark] = useState(() => typeof window !== "undefined" && (localStorage.getItem("theme") === "dark" || (!localStorage.getItem("theme") && window.matchMedia("(prefers-color-scheme: dark)").matches)));
+
+  useEffect(() => {
+    document.documentElement.classList.toggle("dark", dark);
+    localStorage.setItem("theme", dark ? "dark" : "light");
+  }, [dark]);
 
   return (
     <div className="min-h-screen flex flex-col bg-background">
@@ -19,6 +26,9 @@ export const Layout = ({ children }: { children: React.ReactNode }) => {
             <span>CastVote</span>
           </Link>
           <nav className="flex items-center gap-2">
+            <Button variant="ghost" size="icon" onClick={() => setDark((d) => !d)} aria-label="Toggle theme">
+              {dark ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
+            </Button>
             <Button variant="ghost" size="sm" asChild>
               <Link to="/about">About</Link>
             </Button>

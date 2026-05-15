@@ -8,8 +8,9 @@ import { Button } from "@/components/ui/button";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { CheckCircle2 } from "lucide-react";
+import { CheckCircle2, Download } from "lucide-react";
 import { toast } from "sonner";
+import { QRCodeSVG } from "qrcode.react";
 
 interface Position { id: string; title: string; description: string | null; display_order: number; }
 interface Candidate { id: string; position_id: string; name: string; photo_url: string | null; bio: string | null; manifesto: string | null; }
@@ -25,6 +26,7 @@ const Ballot = () => {
   const [submitted, setSubmitted] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [allowed, setAllowed] = useState<boolean | null>(null);
+  const [receipt, setReceipt] = useState<{ id: string; ts: string } | null>(null);
 
   useEffect(() => {
     if (!user || !id) return;
@@ -56,11 +58,29 @@ const Ballot = () => {
   }
 
   if (submitted) {
-    return <Layout><div className="container py-16 text-center"><Card className="p-10 max-w-md mx-auto">
+    const receiptId = receipt?.id || `${id}-${user.id}`.slice(0, 16).toUpperCase();
+    const receiptTs = receipt?.ts || new Date().toISOString();
+    const verifyUrl = `${window.location.origin}/election/${id}/results?receipt=${receiptId}`;
+    const downloadReceipt = () => {
+      const text = `CastVote Receipt\n\nElection: ${election?.title}\nReceipt ID: ${receiptId}\nTimestamp: ${receiptTs}\nVerify: ${verifyUrl}`;
+      const blob = new Blob([text], { type: "text/plain" });
+      const a = document.createElement("a");
+      a.href = URL.createObjectURL(blob);
+      a.download = `castvote-receipt-${receiptId}.txt`;
+      a.click();
+    };
+    return <Layout><div className="container py-16"><Card className="p-10 max-w-md mx-auto text-center">
       <CheckCircle2 className="h-14 w-14 text-success mx-auto mb-4" />
       <h2 className="text-2xl font-bold mb-2">Vote recorded</h2>
       <p className="text-muted-foreground mb-6">Thank you for participating.</p>
-      <div className="flex gap-2 justify-center">
+      <div className="bg-muted/40 rounded-lg p-4 mb-6 inline-block">
+        <QRCodeSVG value={verifyUrl} size={140} />
+      </div>
+      <p className="text-xs text-muted-foreground mb-1">Receipt ID</p>
+      <p className="font-mono text-sm font-semibold mb-1">{receiptId}</p>
+      <p className="text-xs text-muted-foreground mb-6">{new Date(receiptTs).toLocaleString()}</p>
+      <div className="flex gap-2 justify-center flex-wrap">
+        <Button variant="outline" onClick={downloadReceipt}><Download className="h-4 w-4 mr-1.5" />Receipt</Button>
         <Button asChild variant="outline"><Link to="/dashboard">Dashboard</Link></Button>
         <Button asChild><Link to={`/election/${id}/results`}>See results</Link></Button>
       </div>
@@ -76,9 +96,12 @@ const Ballot = () => {
     const rows = positions.map((p) => ({
       election_id: id!, position_id: p.id, candidate_id: selections[p.id], voter_id: user.id,
     }));
-    const { error } = await supabase.from("votes").insert(rows);
+    const { data: inserted, error } = await supabase.from("votes").insert(rows).select("id,created_at");
     setSubmitting(false);
     if (error) { toast.error(error.message); return; }
+    if (inserted && inserted.length) {
+      setReceipt({ id: inserted[0].id.slice(0, 8).toUpperCase(), ts: inserted[0].created_at });
+    }
     setSubmitted(true);
   };
 

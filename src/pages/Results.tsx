@@ -15,6 +15,8 @@ const Results = () => {
   const [positions, setPositions] = useState<Position[]>([]);
   const [candidates, setCandidates] = useState<Candidate[]>([]);
   const [votes, setVotes] = useState<Vote[]>([]);
+  const [voterCount, setVoterCount] = useState(0);
+  const [votedCount, setVotedCount] = useState(0);
 
   useEffect(() => {
     if (!id) return;
@@ -28,8 +30,11 @@ const Results = () => {
         const { data: cand } = await supabase.from("candidates").select("id,position_id,name").in("position_id", positionIds);
         setCandidates((cand ?? []) as Candidate[]);
       }
-      const { data: v } = await supabase.from("votes").select("position_id,candidate_id").eq("election_id", id);
+      const { data: v } = await supabase.from("votes").select("position_id,candidate_id,voter_id").eq("election_id", id);
       setVotes((v ?? []) as Vote[]);
+      setVotedCount(new Set((v ?? []).map((x: any) => x.voter_id)).size);
+      const { count } = await supabase.from("voter_list").select("id", { count: "exact", head: true }).eq("election_id", id);
+      setVoterCount(count ?? 0);
     };
     load();
 
@@ -39,11 +44,18 @@ const Results = () => {
     return () => { supabase.removeChannel(ch); };
   }, [id]);
 
+  const turnout = voterCount > 0 ? Math.round((votedCount / voterCount) * 100) : 0;
   return (
     <Layout>
       <div className="container mx-auto px-4 py-10 max-w-4xl">
         <h1 className="text-3xl font-bold mb-1">{election?.title || "Results"}</h1>
-        <p className="text-muted-foreground mb-8">Total votes cast: {votes.length} • Updates live</p>
+        <p className="text-muted-foreground mb-6">Live results — updates instantly as votes come in.</p>
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-8">
+          <Card className="p-4"><p className="text-xs text-muted-foreground">Total ballots</p><p className="text-2xl font-bold">{votes.length}</p></Card>
+          <Card className="p-4"><p className="text-xs text-muted-foreground">Voters cast</p><p className="text-2xl font-bold">{votedCount}</p></Card>
+          <Card className="p-4"><p className="text-xs text-muted-foreground">Approved voters</p><p className="text-2xl font-bold">{voterCount}</p></Card>
+          <Card className="p-4"><p className="text-xs text-muted-foreground">Turnout</p><p className="text-2xl font-bold text-accent">{turnout}%</p></Card>
+        </div>
 
         <div className="space-y-6">
           {positions.map((pos) => {
