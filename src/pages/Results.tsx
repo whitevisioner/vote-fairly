@@ -44,11 +44,18 @@ const Results = () => {
     return () => { supabase.removeChannel(ch); };
   }, [id]);
 
+  const turnout = voterCount > 0 ? Math.round((votedCount / voterCount) * 100) : 0;
   return (
     <Layout>
       <div className="container mx-auto px-4 py-10 max-w-4xl">
         <h1 className="text-3xl font-bold mb-1">{election?.title || "Results"}</h1>
-        <p className="text-muted-foreground mb-8">Total votes cast: {votes.length} • Updates live</p>
+        <p className="text-muted-foreground mb-6">Live results — updates instantly as votes come in.</p>
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-8">
+          <Card className="p-4"><p className="text-xs text-muted-foreground">Total ballots</p><p className="text-2xl font-bold">{votes.length}</p></Card>
+          <Card className="p-4"><p className="text-xs text-muted-foreground">Voters cast</p><p className="text-2xl font-bold">{votedCount}</p></Card>
+          <Card className="p-4"><p className="text-xs text-muted-foreground">Approved voters</p><p className="text-2xl font-bold">{voterCount}</p></Card>
+          <Card className="p-4"><p className="text-xs text-muted-foreground">Turnout</p><p className="text-2xl font-bold text-accent">{turnout}%</p></Card>
+        </div>
 
         <div className="space-y-6">
           {positions.map((pos) => {
