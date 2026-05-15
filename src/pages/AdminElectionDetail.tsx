@@ -145,7 +145,30 @@ const AdminElectionDetail = () => {
           <TabsList>
             <TabsTrigger value="positions">Positions & Candidates</TabsTrigger>
             <TabsTrigger value="voters">Voters</TabsTrigger>
+            <TabsTrigger value="schedule">Schedule</TabsTrigger>
           </TabsList>
+
+          <TabsContent value="schedule" className="space-y-4 mt-4">
+            <Card className="p-4">
+              <h3 className="font-semibold mb-3 flex items-center gap-2"><Calendar className="h-4 w-4" />Election schedule</h3>
+              <p className="text-sm text-muted-foreground mb-3">Set when voting opens and closes. Times are in your local timezone.</p>
+              <div className="grid md:grid-cols-2 gap-3">
+                <div>
+                  <Label>Start</Label>
+                  <Input type="datetime-local" defaultValue={election?.start_at ? new Date(election.start_at).toISOString().slice(0, 16) : ""} id="start_at" />
+                </div>
+                <div>
+                  <Label>End</Label>
+                  <Input type="datetime-local" defaultValue={election?.end_at ? new Date(election.end_at).toISOString().slice(0, 16) : ""} id="end_at" />
+                </div>
+              </div>
+              <Button className="mt-3" onClick={() => {
+                const s = (document.getElementById("start_at") as HTMLInputElement)?.value;
+                const e = (document.getElementById("end_at") as HTMLInputElement)?.value;
+                updateSchedule(s ? new Date(s).toISOString() : null, e ? new Date(e).toISOString() : null);
+              }}>Save schedule</Button>
+            </Card>
+          </TabsContent>
 
           <TabsContent value="positions" className="space-y-4 mt-4">
             <Card className="p-4">
