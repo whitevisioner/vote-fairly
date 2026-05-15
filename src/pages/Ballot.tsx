@@ -26,6 +26,7 @@ const Ballot = () => {
   const [submitted, setSubmitted] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [allowed, setAllowed] = useState<boolean | null>(null);
+  const [receipt, setReceipt] = useState<{ id: string; ts: string } | null>(null);
 
   useEffect(() => {
     if (!user || !id) return;
