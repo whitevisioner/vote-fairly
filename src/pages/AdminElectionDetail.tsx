@@ -228,8 +228,14 @@ const AdminElectionDetail = () => {
               <h3 className="font-semibold mb-2">Add approved voters</h3>
               <p className="text-sm text-muted-foreground mb-2">Paste emails (comma, space, or newline separated). A unique voting code is generated for each.</p>
               <Textarea rows={4} value={voterEmails} onChange={(e) => setVoterEmails(e.target.value)} placeholder="alice@example.com, bob@example.com" />
-              <div className="flex gap-2 mt-3">
+              <div className="flex gap-2 mt-3 flex-wrap">
                 <Button onClick={addVoters}><Upload className="h-4 w-4 mr-1.5" />Add voters</Button>
+                <Button asChild variant="secondary">
+                  <label className="cursor-pointer">
+                    <Upload className="h-4 w-4 mr-1.5" />Import CSV
+                    <input type="file" accept=".csv,.txt" className="hidden" onChange={(e) => e.target.files?.[0] && importCsv(e.target.files[0])} />
+                  </label>
+                </Button>
                 <Button variant="outline" onClick={exportCodes} disabled={voters.length === 0}><Download className="h-4 w-4 mr-1.5" />Export CSV</Button>
               </div>
             </Card>
