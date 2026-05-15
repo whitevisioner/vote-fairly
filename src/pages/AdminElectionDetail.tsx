@@ -53,6 +53,11 @@ const AdminElectionDetail = () => {
   if (!user) return <Navigate to="/auth" replace />;
   if (!isAdmin) return <Navigate to="/" replace />;
 
+  const updateStatus = async (status: string) => {
+    const { error } = await supabase.from("elections").update({ status: status as "draft" | "open" | "closed" }).eq("id", id!);
+    if (error) toast.error(error.message); else { toast.success("Status updated"); load(); }
+  };
+
   const updateSchedule = async (start_at: string | null, end_at: string | null) => {
     const { error } = await supabase.from("elections").update({ start_at, end_at }).eq("id", id!);
     if (error) toast.error(error.message); else { toast.success("Schedule saved"); load(); }
