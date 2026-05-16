@@ -83,69 +83,73 @@ const Dashboard = () => {
   return (
     <Layout>
       <div className="container mx-auto px-4 py-10 max-w-6xl space-y-8">
-        {/* Org header */}
-        <Card className="p-6 border-primary/20" style={{ background: "var(--gradient-civic)" }}>
-          <div className="flex items-start justify-between gap-4 flex-wrap text-primary-foreground">
-            <div>
-              <div className="inline-flex items-center gap-2 rounded-full bg-background/15 px-3 py-1 text-xs mb-3">
-                <Building2 className="h-3.5 w-3.5" /> Active organization
-              </div>
-              <h1 className="text-3xl font-bold mb-1">GreenView Cooperative Housing Society</h1>
-              <p className="text-sm text-primary-foreground/85 max-w-2xl">
-                A modern housing society using digital voting for society fund allocation and infrastructure planning.
-              </p>
-            </div>
-            <Badge className="bg-accent text-accent-foreground"><Sparkles className="h-3 w-3 mr-1" />Live election in progress</Badge>
-          </div>
-        </Card>
-
-        {/* Stat grid */}
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3">
-          {stats.map((s) => (
-            <Card key={s.label} className="p-4">
-              <div className="flex items-center gap-2 mb-2"><s.icon className={`h-4 w-4 ${s.tone}`} /><p className="text-xs text-muted-foreground">{s.label}</p></div>
-              <p className="text-2xl font-bold">{s.value}</p>
-            </Card>
-          ))}
-        </div>
-
-        {/* Allocation + Notifications */}
-        <div className="grid lg:grid-cols-3 gap-4">
-          <Card className="p-6 lg:col-span-2">
-            <div className="flex items-center justify-between mb-4">
-              <h2 className="text-lg font-semibold flex items-center gap-2"><BarChart3 className="h-4 w-4 text-primary" />Society fund allocation</h2>
-              <span className="text-xs text-muted-foreground">Proposed split for 2026</span>
-            </div>
-            <div className="space-y-4">
-              {allocation.map((a) => (
-                <div key={a.label}>
-                  <div className="flex justify-between text-sm mb-1"><span>{a.label}</span><span className="font-semibold">{a.pct}%</span></div>
-                  <Progress value={a.pct} />
-                </div>
-              ))}
-            </div>
-            <div className="grid grid-cols-3 gap-3 mt-6">
-              <div className="rounded-md border p-3"><p className="text-xs text-muted-foreground">Infrastructure spend</p><p className="font-semibold">₹ 8.4 L</p></div>
-              <div className="rounded-md border p-3"><p className="text-xs text-muted-foreground">Welfare spend</p><p className="font-semibold">₹ 6.0 L</p></div>
-              <div className="rounded-md border p-3"><p className="text-xs text-muted-foreground">Security spend</p><p className="font-semibold">₹ 9.6 L</p></div>
-            </div>
-          </Card>
-
-          <Card className="p-6">
-            <h2 className="text-lg font-semibold mb-4 flex items-center gap-2"><Bell className="h-4 w-4 text-accent" />Notifications</h2>
-            <ul className="space-y-3">
-              {notifications.map((n, i) => (
-                <li key={i} className="flex items-start gap-3 text-sm">
-                  <n.icon className={`h-4 w-4 mt-0.5 ${n.tone}`} />
-                  <div className="flex-1">
-                    <p className="leading-tight">{n.title}</p>
-                    <p className="text-xs text-muted-foreground">{n.time}</p>
+        {isDemo && (
+          <>
+            {/* Org header */}
+            <Card className="p-6 border-primary/20" style={{ background: "var(--gradient-civic)" }}>
+              <div className="flex items-start justify-between gap-4 flex-wrap text-primary-foreground">
+                <div>
+                  <div className="inline-flex items-center gap-2 rounded-full bg-background/15 px-3 py-1 text-xs mb-3">
+                    <Building2 className="h-3.5 w-3.5" /> Active organization
                   </div>
-                </li>
+                  <h1 className="text-3xl font-bold mb-1">GreenView Cooperative Housing Society</h1>
+                  <p className="text-sm text-primary-foreground/85 max-w-2xl">
+                    A modern housing society using digital voting for society fund allocation and infrastructure planning.
+                  </p>
+                </div>
+                <Badge className="bg-accent text-accent-foreground"><Sparkles className="h-3 w-3 mr-1" />Live election in progress</Badge>
+              </div>
+            </Card>
+
+            {/* Stat grid */}
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3">
+              {stats.map((s) => (
+                <Card key={s.label} className="p-4">
+                  <div className="flex items-center gap-2 mb-2"><s.icon className={`h-4 w-4 ${s.tone}`} /><p className="text-xs text-muted-foreground">{s.label}</p></div>
+                  <p className="text-2xl font-bold">{s.value}</p>
+                </Card>
               ))}
-            </ul>
-          </Card>
-        </div>
+            </div>
+
+            {/* Allocation + Notifications */}
+            <div className="grid lg:grid-cols-3 gap-4">
+              <Card className="p-6 lg:col-span-2">
+                <div className="flex items-center justify-between mb-4">
+                  <h2 className="text-lg font-semibold flex items-center gap-2"><BarChart3 className="h-4 w-4 text-primary" />Society fund allocation</h2>
+                  <span className="text-xs text-muted-foreground">Proposed split for 2026</span>
+                </div>
+                <div className="space-y-4">
+                  {allocation.map((a) => (
+                    <div key={a.label}>
+                      <div className="flex justify-between text-sm mb-1"><span>{a.label}</span><span className="font-semibold">{a.pct}%</span></div>
+                      <Progress value={a.pct} />
+                    </div>
+                  ))}
+                </div>
+                <div className="grid grid-cols-3 gap-3 mt-6">
+                  <div className="rounded-md border p-3"><p className="text-xs text-muted-foreground">Infrastructure spend</p><p className="font-semibold">₹ 8.4 L</p></div>
+                  <div className="rounded-md border p-3"><p className="text-xs text-muted-foreground">Welfare spend</p><p className="font-semibold">₹ 6.0 L</p></div>
+                  <div className="rounded-md border p-3"><p className="text-xs text-muted-foreground">Security spend</p><p className="font-semibold">₹ 9.6 L</p></div>
+                </div>
+              </Card>
+
+              <Card className="p-6">
+                <h2 className="text-lg font-semibold mb-4 flex items-center gap-2"><Bell className="h-4 w-4 text-accent" />Notifications</h2>
+                <ul className="space-y-3">
+                  {notifications.map((n, i) => (
+                    <li key={i} className="flex items-start gap-3 text-sm">
+                      <n.icon className={`h-4 w-4 mt-0.5 ${n.tone}`} />
+                      <div className="flex-1">
+                        <p className="leading-tight">{n.title}</p>
+                        <p className="text-xs text-muted-foreground">{n.time}</p>
+                      </div>
+                    </li>
+                  ))}
+                </ul>
+              </Card>
+            </div>
+          </>
+        )}
 
         {/* Elections list */}
         <div>
