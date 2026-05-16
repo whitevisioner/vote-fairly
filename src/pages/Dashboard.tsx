@@ -197,17 +197,19 @@ const Dashboard = () => {
         </div>
 
         {/* Activity log */}
-        <Card className="p-6">
-          <h2 className="text-lg font-semibold mb-4 flex items-center gap-2"><Activity className="h-4 w-4 text-primary" />Recent activity</h2>
-          <ul className="divide-y">
-            {activity.map((a, i) => (
-              <li key={i} className="py-3 flex items-center justify-between text-sm">
-                <span><span className="font-medium">{a.who}</span> <span className="text-muted-foreground">{a.what}</span></span>
-                <span className="text-xs text-muted-foreground">{a.when}</span>
-              </li>
-            ))}
-          </ul>
-        </Card>
+        {isDemo && (
+          <Card className="p-6">
+            <h2 className="text-lg font-semibold mb-4 flex items-center gap-2"><Activity className="h-4 w-4 text-primary" />Recent activity</h2>
+            <ul className="divide-y">
+              {activity.map((a, i) => (
+                <li key={i} className="py-3 flex items-center justify-between text-sm">
+                  <span><span className="font-medium">{a.who}</span> <span className="text-muted-foreground">{a.what}</span></span>
+                  <span className="text-xs text-muted-foreground">{a.when}</span>
+                </li>
+              ))}
+            </ul>
+          </Card>
+        )}
       </div>
     </Layout>
   );
