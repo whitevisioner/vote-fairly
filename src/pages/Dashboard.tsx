@@ -69,6 +69,8 @@ const Dashboard = () => {
   if (loading) return <Layout><div className="container py-16">Loading...</div></Layout>;
   if (!user) return <Navigate to="/auth" replace />;
 
+  const isDemo = user.email?.toLowerCase() === "demo@castvote.com";
+
   const stats = [
     { label: "Total Residents", value: 450, icon: Users, tone: "text-primary" },
     { label: "Approved Voters", value: 390, icon: ShieldCheck, tone: "text-accent" },
