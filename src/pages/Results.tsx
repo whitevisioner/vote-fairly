@@ -4,6 +4,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { Layout } from "@/components/Layout";
 import { Card } from "@/components/ui/card";
 import { Bar, BarChart, ResponsiveContainer, XAxis, YAxis, Tooltip, CartesianGrid } from "recharts";
+import { ParliamentChart } from "@/components/ParliamentChart";
 
 interface Position { id: string; title: string; }
 interface Candidate { id: string; position_id: string; name: string; }
@@ -74,16 +75,22 @@ const Results = () => {
                 {leader && total > 0 && (
                   <p className="text-sm mb-4">Leading: <span className="font-semibold text-primary">{leader.name}</span></p>
                 )}
-                <div className="h-64">
-                  <ResponsiveContainer>
-                    <BarChart data={data}>
-                      <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" />
-                      <XAxis dataKey="name" stroke="hsl(var(--muted-foreground))" fontSize={12} />
-                      <YAxis allowDecimals={false} stroke="hsl(var(--muted-foreground))" fontSize={12} />
-                      <Tooltip contentStyle={{ background: "hsl(var(--card))", border: "1px solid hsl(var(--border))", borderRadius: 6 }} />
-                      <Bar dataKey="votes" fill="hsl(var(--primary))" radius={[6, 6, 0, 0]} />
-                    </BarChart>
-                  </ResponsiveContainer>
+                <div className="grid md:grid-cols-2 gap-6 items-center">
+                  <div>
+                    <p className="text-sm font-medium mb-2 text-center text-muted-foreground">Parliament seat distribution</p>
+                    <ParliamentChart data={data.map((d) => ({ ...d, color: "" }))} totalSeats={60} />
+                  </div>
+                  <div className="h-64">
+                    <ResponsiveContainer>
+                      <BarChart data={data}>
+                        <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" />
+                        <XAxis dataKey="name" stroke="hsl(var(--muted-foreground))" fontSize={12} />
+                        <YAxis allowDecimals={false} stroke="hsl(var(--muted-foreground))" fontSize={12} />
+                        <Tooltip contentStyle={{ background: "hsl(var(--card))", border: "1px solid hsl(var(--border))", borderRadius: 6 }} />
+                        <Bar dataKey="votes" fill="hsl(var(--primary))" radius={[6, 6, 0, 0]} />
+                      </BarChart>
+                    </ResponsiveContainer>
+                  </div>
                 </div>
               </Card>
             );
