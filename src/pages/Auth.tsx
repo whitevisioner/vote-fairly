@@ -7,7 +7,12 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { toast } from "sonner";
-import { Mail, Lock, User, ShieldCheck, Vote, Users, TrendingUp, Activity, Sparkles } from "lucide-react";
+import { Mail, Lock, User, ShieldCheck, Vote, Users, TrendingUp, Activity, Sparkles, KeyRound, Copy } from "lucide-react";
+
+const CREDENTIALS = [
+  { label: "Admin", email: "admin@castvote.com", password: "AdminPassword#2026", accent: "from-[#7C4DFF] to-[#5E35B1]" },
+  { label: "Demo Admin", email: "demo-admin@castvote.app", password: "DemoAdmin#2026", accent: "from-[#00E676] to-[#00C853]" },
+];
 
 const schema = z.object({
   email: z.string().trim().email().max(255),
@@ -211,7 +216,47 @@ const Auth = () => {
                 </TabsContent>
               </Tabs>
 
-              <div className="mt-6 flex items-center justify-center gap-2 text-xs text-white/40">
+              {/* Credentials helper */}
+              <div className="mt-6 rounded-2xl border border-white/10 bg-white/[0.03] p-4">
+                <div className="mb-3 flex items-center gap-2">
+                  <KeyRound className="h-3.5 w-3.5 text-[#00E676]" />
+                  <span className="text-[11px] font-semibold uppercase tracking-wider text-white/70">
+                    Test credentials — click to autofill
+                  </span>
+                </div>
+                <div className="space-y-2">
+                  {CREDENTIALS.map((c) => (
+                    <button
+                      key={c.email}
+                      type="button"
+                      onClick={() => { setEmail(c.email); setPassword(c.password); toast.success(`${c.label} credentials filled`); }}
+                      className="group flex w-full items-center justify-between gap-3 rounded-xl border border-white/10 bg-white/[0.04] p-3 text-left hover:bg-white/[0.08] hover:border-white/20 transition-all"
+                    >
+                      <div className="flex items-center gap-3 min-w-0">
+                        <div className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-gradient-to-br ${c.accent}`}>
+                          <ShieldCheck className="h-4 w-4 text-white" />
+                        </div>
+                        <div className="min-w-0">
+                          <div className="text-xs font-semibold text-white">{c.label}</div>
+                          <div className="truncate font-mono text-[11px] text-white/60">{c.email}</div>
+                          <div className="truncate font-mono text-[11px] text-white/40">{c.password}</div>
+                        </div>
+                      </div>
+                      <span
+                        role="button"
+                        tabIndex={0}
+                        onClick={(e) => { e.stopPropagation(); navigator.clipboard.writeText(`${c.email} / ${c.password}`); toast.success("Copied"); }}
+                        onKeyDown={(e) => { if (e.key === "Enter") { e.stopPropagation(); navigator.clipboard.writeText(`${c.email} / ${c.password}`); toast.success("Copied"); } }}
+                        className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg border border-white/10 bg-white/5 text-white/60 opacity-0 group-hover:opacity-100 hover:bg-white/10 hover:text-white transition-all"
+                      >
+                        <Copy className="h-3.5 w-3.5" />
+                      </span>
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              <div className="mt-4 flex items-center justify-center gap-2 text-xs text-white/40">
                 <ShieldCheck className="h-3.5 w-3.5 text-[#00E676]" />
                 Protected by end-to-end encryption
               </div>
