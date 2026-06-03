@@ -1,9 +1,11 @@
 import { Link, useNavigate } from "react-router-dom";
-import { Vote, LogOut, Shield, LayoutDashboard, Github, Mail, Moon, Sun } from "lucide-react";
+import { LogOut, Shield, LayoutDashboard, Github, Mail, Moon, Sun, Menu } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { useAuth } from "@/hooks/useAuth";
 import { useEffect, useState } from "react";
 import devLogo from "@/assets/developer-logo.png";
+import castvoteLogo from "@/assets/castvote-logo.png.asset.json";
 
 export const Layout = ({ children }: { children: React.ReactNode }) => {
   const { user, isAdmin, signOut } = useAuth();
