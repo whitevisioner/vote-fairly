@@ -51,25 +51,30 @@ const allocation = [
   { label: "Community Welfare", pct: 25, color: "bg-secondary-foreground/70" },
 ];
 
+const DEMO_USER_ID = "7ebcdf88-10aa-4929-9fa6-00cc95c9213d";
+const DEMO_EMAIL = "demo-admin@castvote.app";
+
 const Dashboard = () => {
   const { user, loading } = useAuth();
   const [elections, setElections] = useState<Election[]>([]);
   const [voted, setVoted] = useState<Set<string>>(new Set());
 
+  const isDemo = user?.email?.toLowerCase() === DEMO_EMAIL;
+
   useEffect(() => {
     if (!user) return;
     (async () => {
-      const { data: el } = await supabase.from("elections").select("*").order("created_at", { ascending: false });
+      let q = supabase.from("elections").select("*").order("created_at", { ascending: false });
+      q = isDemo ? q.eq("created_by", DEMO_USER_ID) : q.neq("created_by", DEMO_USER_ID);
+      const { data: el } = await q;
       setElections((el ?? []) as Election[]);
       const { data: v } = await supabase.from("votes").select("election_id").eq("voter_id", user.id);
       setVoted(new Set((v ?? []).map((r) => r.election_id)));
     })();
-  }, [user]);
+  }, [user, isDemo]);
 
   if (loading) return <Layout><div className="container py-16">Loading...</div></Layout>;
   if (!user) return <Navigate to="/auth" replace />;
-
-  const isDemo = user.email?.toLowerCase() === "demo@castvote.com";
 
   const stats = [
     { label: "Total Residents", value: 450, icon: Users, tone: "text-primary" },
