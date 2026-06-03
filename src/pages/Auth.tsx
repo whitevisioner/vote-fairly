@@ -10,8 +10,8 @@ import { toast } from "sonner";
 import { Mail, Lock, User, ShieldCheck, Vote, Users, TrendingUp, Activity, Sparkles, KeyRound, Copy } from "lucide-react";
 
 const CREDENTIALS = [
-  { label: "Admin", email: "admin@castvote.com", password: "AdminPassword#2026", accent: "from-[#7C4DFF] to-[#5E35B1]" },
-  { label: "Demo Admin", email: "demo-admin@castvote.app", password: "DemoAdmin#2026", accent: "from-[#00E676] to-[#00C853]" },
+  { label: "Admin", sub: "Full admin console", email: "admin@castvote.com", password: "AdminPassword#2026", accent: "from-[#7C4DFF] to-[#5E35B1]" },
+  { label: "Demo Voter", sub: "Sample election results", email: "demo-admin@castvote.app", password: "DemoAdmin#2026", accent: "from-[#00E676] to-[#00C853]" },
 ];
 
 const schema = z.object({
