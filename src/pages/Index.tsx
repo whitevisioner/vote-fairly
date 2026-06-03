@@ -8,18 +8,18 @@ const Index = () => (
   <Layout>
     <section className="relative overflow-hidden">
       <div className="absolute inset-0 opacity-10" style={{ background: "var(--gradient-civic)" }} />
-      <div className="container mx-auto px-4 py-24 text-center relative">
+      <div className="container mx-auto px-4 py-16 sm:py-24 text-center relative">
         <div className="inline-flex items-center gap-2 rounded-full bg-accent px-4 py-1.5 text-sm text-accent-foreground mb-6">
           <ShieldCheck className="h-4 w-4" /> Triple-verified ballots
         </div>
-        <h1 className="text-5xl md:text-6xl font-bold mb-6 tracking-tight">
+        <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold mb-6 tracking-tight">
           Run elections you can <span className="text-primary">trust</span>.
         </h1>
-        <p className="text-xl text-muted-foreground max-w-2xl mx-auto mb-8">
+        <p className="text-base sm:text-xl text-muted-foreground max-w-2xl mx-auto mb-8">
           A secure voting platform for student bodies, companies, and communities — with email verification,
           approved voter lists, one-time codes, and live results.
         </p>
-        <div className="flex gap-3 justify-center">
+        <div className="flex flex-col sm:flex-row gap-3 justify-center">
           <Button size="lg" asChild><Link to="/auth">Get started</Link></Button>
           <Button size="lg" variant="outline" asChild><Link to="/dashboard">View elections</Link></Button>
         </div>
