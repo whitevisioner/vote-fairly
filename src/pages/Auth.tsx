@@ -7,7 +7,12 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { toast } from "sonner";
-import { Mail, Lock, User, ShieldCheck, Vote, Users, TrendingUp, Activity, Sparkles } from "lucide-react";
+import { Mail, Lock, User, ShieldCheck, Vote, Users, TrendingUp, Activity, Sparkles, KeyRound, Copy } from "lucide-react";
+
+const CREDENTIALS = [
+  { label: "Admin", email: "admin@castvote.com", password: "AdminPassword#2026", accent: "from-[#7C4DFF] to-[#5E35B1]" },
+  { label: "Demo Admin", email: "demo-admin@castvote.app", password: "DemoAdmin#2026", accent: "from-[#00E676] to-[#00C853]" },
+];
 
 const schema = z.object({
   email: z.string().trim().email().max(255),
