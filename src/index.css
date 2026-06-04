@@ -1,30 +1,32 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 @layer base {
   :root {
-    /* Modern Authority palette */
-    --background: 220 14% 96%;          /* #F3F4F6 soft gray */
-    --foreground: 244 47% 12%;
+    /* Light mode — Notion / Clerk / Framer inspired */
+    --background: 0 0% 100%;
+    --foreground: 222 24% 10%;
 
-    --card: 0 0% 100%;                   /* pure white cards */
-    --card-foreground: 244 47% 12%;
+    --card: 0 0% 100%;
+    --card-foreground: 222 24% 10%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 244 47% 12%;
+    --popover-foreground: 222 24% 10%;
 
-    --primary: 244 55% 34%;              /* #4338CA royal indigo */
+    --primary: 222 47% 11%;              /* near-black for primary actions (Vercel-esque) */
     --primary-foreground: 0 0% 100%;
-    --primary-glow: 244 60% 45%;
+    --primary-glow: 244 60% 55%;
 
-    --secondary: 220 14% 92%;
-    --secondary-foreground: 244 47% 12%;
+    --secondary: 220 14% 96%;
+    --secondary-foreground: 222 24% 10%;
 
-    --muted: 220 14% 92%;
-    --muted-foreground: 220 10% 40%;
+    --muted: 220 14% 96%;
+    --muted-foreground: 220 9% 46%;
 
-    --accent: 158 84% 39%;               /* #10B981 emerald */
+    --accent: 244 70% 60%;               /* indigo accent */
     --accent-foreground: 0 0% 100%;
 
     --highlight: 158 84% 39%;
@@ -37,52 +39,124 @@
     --success-foreground: 0 0% 100%;
 
     --warning: 38 92% 50%;
-    --warning-foreground: 244 47% 12%;
+    --warning-foreground: 222 24% 10%;
 
-    --border: 220 13% 88%;
-    --input: 220 13% 88%;
-    --ring: 244 55% 34%;
+    --border: 220 13% 91%;
+    --input: 220 13% 91%;
+    --ring: 244 70% 60%;
 
-    --radius: 0.6rem;
+    --radius: 0.75rem;
 
-    --gradient-civic: linear-gradient(135deg, hsl(244 55% 28%), hsl(244 55% 40%));
-    --shadow-civic: 0 12px 40px -10px hsl(244 55% 34% / 0.35);
+    --gradient-civic: linear-gradient(135deg, hsl(244 70% 55%), hsl(280 65% 60%));
+    --gradient-hero: radial-gradient(1200px 600px at 50% -10%, hsl(244 70% 60% / 0.18), transparent 60%);
+    --shadow-civic: 0 12px 40px -10px hsl(244 70% 50% / 0.25);
+    --shadow-elegant: 0 1px 2px hsl(222 24% 10% / 0.04), 0 8px 24px -8px hsl(222 24% 10% / 0.08);
 
-    --sidebar-background: 0 0% 98%;
-    --sidebar-foreground: 240 5.3% 26.1%;
-    --sidebar-primary: 240 5.9% 10%;
-    --sidebar-primary-foreground: 0 0% 98%;
-    --sidebar-accent: 240 4.8% 95.9%;
-    --sidebar-accent-foreground: 240 5.9% 10%;
+    --sidebar-background: 0 0% 99%;
+    --sidebar-foreground: 222 24% 20%;
+    --sidebar-primary: 222 47% 11%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 220 14% 96%;
+    --sidebar-accent-foreground: 222 24% 10%;
     --sidebar-border: 220 13% 91%;
-    --sidebar-ring: 217.2 91.2% 59.8%;
+    --sidebar-ring: 244 70% 60%;
   }
 
   .dark {
-    --background: 222 47% 8%;
-    --foreground: 210 40% 98%;
-    --card: 222 47% 11%;
-    --card-foreground: 210 40% 98%;
-    --popover: 222 47% 11%;
-    --popover-foreground: 210 40% 98%;
-    --primary: 222 80% 60%;
-    --primary-foreground: 222 47% 11%;
-    --secondary: 217 32% 18%;
-    --secondary-foreground: 210 40% 98%;
-    --muted: 217 32% 18%;
-    --muted-foreground: 215 20% 65%;
-    --accent: 217 32% 18%;
-    --accent-foreground: 210 40% 98%;
-    --destructive: 0 62% 40%;
-    --destructive-foreground: 210 40% 98%;
-    --border: 217 32% 18%;
-    --input: 217 32% 18%;
-    --ring: 222 80% 60%;
+    /* Dark mode — Vercel / Linear / Stripe Dashboard inspired */
+    --background: 240 10% 4%;            /* #0a0a0d */
+    --foreground: 220 14% 96%;
+
+    --card: 240 8% 7%;                   /* #111114 */
+    --card-foreground: 220 14% 96%;
+
+    --popover: 240 8% 7%;
+    --popover-foreground: 220 14% 96%;
+
+    --primary: 220 14% 96%;              /* white primary on dark, Vercel style */
+    --primary-foreground: 240 10% 4%;
+    --primary-glow: 244 80% 70%;
+
+    --secondary: 240 6% 14%;
+    --secondary-foreground: 220 14% 96%;
+
+    --muted: 240 6% 12%;
+    --muted-foreground: 220 9% 60%;
+
+    --accent: 244 80% 68%;
+    --accent-foreground: 240 10% 4%;
+
+    --highlight: 158 70% 50%;
+    --highlight-foreground: 240 10% 4%;
+
+    --destructive: 0 70% 55%;
+    --destructive-foreground: 220 14% 96%;
+
+    --success: 158 70% 50%;
+    --success-foreground: 240 10% 4%;
+
+    --warning: 38 95% 60%;
+    --warning-foreground: 240 10% 4%;
+
+    --border: 240 6% 16%;
+    --input: 240 6% 16%;
+    --ring: 244 80% 68%;
+
+    --gradient-civic: linear-gradient(135deg, hsl(244 80% 60%), hsl(280 75% 65%));
+    --gradient-hero: radial-gradient(1200px 600px at 50% -10%, hsl(244 80% 65% / 0.22), transparent 60%);
+    --shadow-civic: 0 12px 40px -10px hsl(244 80% 60% / 0.4);
+    --shadow-elegant: 0 1px 2px hsl(0 0% 0% / 0.4), 0 8px 24px -8px hsl(0 0% 0% / 0.5);
+
+    --sidebar-background: 240 10% 4%;
+    --sidebar-foreground: 220 14% 90%;
+    --sidebar-primary: 220 14% 96%;
+    --sidebar-primary-foreground: 240 10% 4%;
+    --sidebar-accent: 240 6% 12%;
+    --sidebar-accent-foreground: 220 14% 96%;
+    --sidebar-border: 240 6% 16%;
+    --sidebar-ring: 244 80% 68%;
   }
 }
 
 @layer base {
   * { @apply border-border; }
-  body { @apply bg-background text-foreground font-sans antialiased; }
-  h1, h2, h3, h4 { @apply tracking-tight; }
+  body {
+    @apply bg-background text-foreground antialiased;
+    font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+    font-feature-settings: 'cv11', 'ss01', 'ss03';
+  }
+  h1, h2, h3, h4 { @apply tracking-tight font-semibold; letter-spacing: -0.02em; }
+  h1 { letter-spacing: -0.035em; }
 }
+
+@layer utilities {
+  .grain {
+    background-image: radial-gradient(circle at 1px 1px, hsl(var(--foreground) / 0.05) 1px, transparent 0);
+    background-size: 24px 24px;
+  }
+  .hero-glow {
+    background: var(--gradient-hero);
+  }
+  .glass {
+    @apply bg-card/60 backdrop-blur-xl border border-border/60;
+  }
+  .text-gradient {
+    background: linear-gradient(135deg, hsl(var(--foreground)), hsl(var(--foreground) / 0.6));
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: transparent;
+  }
+}
+
+@keyframes fade-in {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.animate-fade-in { animation: fade-in 0.6s cubic-bezier(0.16,1,0.3,1) both; }
+
+@keyframes slide-up {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.animate-slide-up { animation: slide-up 0.7s cubic-bezier(0.16,1,0.3,1) both; }
