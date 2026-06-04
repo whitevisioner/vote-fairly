@@ -148,7 +148,7 @@ const Index = () => (
         {features.map((f) => (
           <Card key={f.title} className="p-5 hover:border-foreground/20 transition-colors group">
             <div className="h-9 w-9 rounded-lg bg-secondary flex items-center justify-center mb-4 group-hover:bg-accent/15 transition-colors">
-              <f.Icon className="h-4.5 w-4.5 text-foreground" />
+              <f.Icon className="h-4 w-4 text-foreground" />
             </div>
             <h3 className="font-semibold mb-1.5 text-[15px]">{f.title}</h3>
             <p className="text-sm text-muted-foreground leading-relaxed">{f.desc}</p>
