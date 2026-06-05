@@ -333,7 +333,4 @@ const EmptyState = ({ onCreate, hasAny }: { onCreate: () => void; hasAny: boolea
   </div>
 );
 
-// Re-import Shield icon for the access-denied block (kept inline to avoid grouping noise above)
-import { Shield } from "lucide-react";
-
 export default AdminElections;
