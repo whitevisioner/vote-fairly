@@ -21,7 +21,6 @@ import {
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import {
   Plus,
-  Settings,
   Vote,
   Users,
   CheckCircle2,
@@ -30,6 +29,7 @@ import {
   Search,
   ArrowUpRight,
   Activity,
+  Shield,
 } from "lucide-react";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
