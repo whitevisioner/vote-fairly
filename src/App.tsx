@@ -4,6 +4,8 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { AuthProvider } from "@/hooks/useAuth";
+import { ScrollToTop } from "@/components/ScrollToTop";
+import { ProtectedRoute } from "@/components/ProtectedRoute";
 import Index from "./pages/Index.tsx";
 import About from "./pages/About.tsx";
 import Auth from "./pages/Auth.tsx";
@@ -24,16 +26,17 @@ const App = () => (
       <Sonner />
       <BrowserRouter>
         <AuthProvider>
+          <ScrollToTop />
           <Routes>
             <Route path="/" element={<Index />} />
             <Route path="/about" element={<About />} />
             <Route path="/auth" element={<Auth />} />
-            <Route path="/dashboard" element={<Dashboard />} />
-            <Route path="/election/:id/code" element={<VotingCode />} />
-            <Route path="/election/:id/vote" element={<Ballot />} />
+            <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
+            <Route path="/election/:id/code" element={<ProtectedRoute><VotingCode /></ProtectedRoute>} />
+            <Route path="/election/:id/vote" element={<ProtectedRoute><Ballot /></ProtectedRoute>} />
             <Route path="/election/:id/results" element={<Results />} />
-            <Route path="/admin" element={<AdminElections />} />
-            <Route path="/admin/election/:id" element={<AdminElectionDetail />} />
+            <Route path="/admin" element={<ProtectedRoute requireAdmin><AdminElections /></ProtectedRoute>} />
+            <Route path="/admin/election/:id" element={<ProtectedRoute requireAdmin><AdminElectionDetail /></ProtectedRoute>} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </AuthProvider>
