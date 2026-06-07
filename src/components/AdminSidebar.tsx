@@ -1,4 +1,4 @@
-import { NavLink, useLocation, Link } from "react-router-dom";
+import { NavLink, Link, useNavigate } from "react-router-dom";
 import {
   LayoutDashboard,
   Vote,
@@ -25,39 +25,49 @@ import {
 import castvoteLogo from "@/assets/castvote-logo.png.asset.json";
 import { useAuth } from "@/hooks/useAuth";
 import { Button } from "@/components/ui/button";
-import { useNavigate } from "react-router-dom";
 
 const nav = [
-  { title: "Overview", url: "/admin", icon: LayoutDashboard, exact: true },
-  { title: "Elections", url: "/admin?tab=elections", icon: Vote },
-  { title: "Voters", url: "/admin?tab=voters", icon: Users },
-  { title: "Results", url: "/admin?tab=results", icon: BarChart3 },
+  { title: "Overview", url: "/admin/overview", icon: LayoutDashboard },
+  { title: "Elections", url: "/admin/elections", icon: Vote },
+  { title: "Voters", url: "/admin/voters", icon: Users },
+  { title: "Results", url: "/admin/results", icon: BarChart3 },
 ];
 
 const system = [
-  { title: "Administrators", url: "/admin?tab=admins", icon: Shield },
-  { title: "Audit log", url: "/admin?tab=audit", icon: FileText },
-  { title: "Settings", url: "/admin?tab=settings", icon: Settings },
+  { title: "Administrators", url: "/admin/administrators", icon: Shield },
+  { title: "Audit log", url: "/admin/audit", icon: FileText },
+  { title: "Settings", url: "/admin/settings", icon: Settings },
 ];
 
 export function AdminSidebar() {
   const { state } = useSidebar();
   const collapsed = state === "collapsed";
-  const { pathname, search } = useLocation();
   const { signOut, user } = useAuth();
   const navigate = useNavigate();
-
-  const isActive = (url: string, exact?: boolean) => {
-    const [path, query] = url.split("?");
-    if (exact) return pathname === path && !search;
-    if (query) return pathname === path && search.includes(query);
-    return pathname.startsWith(path);
-  };
 
   const handleSignOut = async () => {
     await signOut();
     navigate("/");
   };
+
+  const renderItems = (items: typeof nav) =>
+    items.map((item) => (
+      <SidebarMenuItem key={item.title}>
+        <SidebarMenuButton asChild tooltip={item.title}>
+          <NavLink
+            to={item.url}
+            className={({ isActive }) =>
+              isActive
+                ? "bg-sidebar-accent text-sidebar-accent-foreground font-medium"
+                : ""
+            }
+          >
+            <item.icon className="h-4 w-4" />
+            <span>{item.title}</span>
+          </NavLink>
+        </SidebarMenuButton>
+      </SidebarMenuItem>
+    ));
 
   return (
     <Sidebar collapsible="icon">
@@ -77,36 +87,14 @@ export function AdminSidebar() {
         <SidebarGroup>
           <SidebarGroupLabel>Manage</SidebarGroupLabel>
           <SidebarGroupContent>
-            <SidebarMenu>
-              {nav.map((item) => (
-                <SidebarMenuItem key={item.title}>
-                  <SidebarMenuButton asChild isActive={isActive(item.url, item.exact)} tooltip={item.title}>
-                    <NavLink to={item.url}>
-                      <item.icon className="h-4 w-4" />
-                      <span>{item.title}</span>
-                    </NavLink>
-                  </SidebarMenuButton>
-                </SidebarMenuItem>
-              ))}
-            </SidebarMenu>
+            <SidebarMenu>{renderItems(nav)}</SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>
 
         <SidebarGroup>
           <SidebarGroupLabel>System</SidebarGroupLabel>
           <SidebarGroupContent>
-            <SidebarMenu>
-              {system.map((item) => (
-                <SidebarMenuItem key={item.title}>
-                  <SidebarMenuButton asChild isActive={isActive(item.url)} tooltip={item.title}>
-                    <NavLink to={item.url}>
-                      <item.icon className="h-4 w-4" />
-                      <span>{item.title}</span>
-                    </NavLink>
-                  </SidebarMenuButton>
-                </SidebarMenuItem>
-              ))}
-            </SidebarMenu>
+            <SidebarMenu>{renderItems(system)}</SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>
       </SidebarContent>
