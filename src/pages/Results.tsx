@@ -163,6 +163,60 @@ const Results = () => {
           ))}
         </div>
 
+        {/* Winner hero — top position */}
+        {overallLeaders[0] && overallLeaders[0].total > 0 && overallLeaders[0].data[0] && (() => {
+          const { pos, data, total } = overallLeaders[0];
+          const winner = data[0];
+          const runner = data[1];
+          const winPct = total ? (winner.votes / total) * 100 : 0;
+          const margin = runner ? winner.votes - runner.votes : winner.votes;
+          return (
+            <Card className="overflow-hidden mb-6 border-amber-500/30 bg-gradient-to-br from-amber-500/5 via-background to-background">
+              <div className="p-5 sm:p-8">
+                <div className="flex items-center gap-2 text-xs font-medium text-amber-600 dark:text-amber-400 mb-3">
+                  <Crown className="h-4 w-4" /> WINNER · {pos.title}
+                </div>
+                <div className="flex items-start justify-between gap-4 flex-wrap">
+                  <div className="min-w-0 flex-1">
+                    <h2 className="text-2xl sm:text-4xl font-bold tracking-tight break-words mb-1">{winner.name}</h2>
+                    <p className="text-sm text-muted-foreground">
+                      {winner.votes} {winner.votes === 1 ? "vote" : "votes"} · Leading by {margin}
+                    </p>
+                  </div>
+                  <div className="text-right shrink-0">
+                    <div className="text-3xl sm:text-5xl font-bold tabular-nums text-amber-600 dark:text-amber-400">
+                      {winPct.toFixed(1)}%
+                    </div>
+                    <p className="text-xs text-muted-foreground">vote share</p>
+                  </div>
+                </div>
+                {data.length > 1 && (
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 mt-6">
+                    {data.slice(0, 3).map((c, i) => {
+                      const pct = total ? (c.votes / total) * 100 : 0;
+                      const ranks = ["#1 Winner", "#2 Runner-up", "#3 Third"];
+                      const tones = ["border-amber-500/40 bg-amber-500/5", "border-border", "border-border"];
+                      return (
+                        <div key={c.id} className={`rounded-lg border p-3 ${tones[i]}`}>
+                          <p className="text-[11px] font-medium text-muted-foreground uppercase tracking-wide">{ranks[i]}</p>
+                          <p className="font-semibold truncate">{c.name}</p>
+                          <div className="flex items-center justify-between text-xs text-muted-foreground mt-1 tabular-nums">
+                            <span>{c.votes} votes</span><span>{pct.toFixed(1)}%</span>
+                          </div>
+                          <div className="h-1.5 rounded-full bg-muted overflow-hidden mt-1.5">
+                            <div className="h-full rounded-full transition-all duration-700"
+                              style={{ width: `${pct}%`, background: i === 0 ? "hsl(var(--primary))" : "hsl(var(--muted-foreground) / 0.6)" }} />
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
+                )}
+              </div>
+            </Card>
+          );
+        })()}
+
         {/* Per-position */}
         <div className="space-y-6">
           {overallLeaders.map(({ pos, data, total }) => {
