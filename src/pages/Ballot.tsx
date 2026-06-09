@@ -191,33 +191,35 @@ const Ballot = () => {
 
         {/* Sticky progress */}
         <div className="sticky top-14 sm:top-16 z-20 -mx-4 px-4 py-3 bg-background/85 backdrop-blur-md border-b mb-6">
-          <div className="flex items-center justify-between text-sm mb-1.5">
-            <span className="font-medium">Ballot progress</span>
-            <span className="text-muted-foreground">{completed} of {positions.length} positions</span>
+          <div className="flex items-center justify-between text-sm mb-1.5 gap-2">
+            <span className="font-medium truncate">
+              Position {Math.min(completed + 1, positions.length || 1)} of {positions.length}
+            </span>
+            <span className="text-muted-foreground tabular-nums shrink-0">{Math.round(progress)}% complete</span>
           </div>
-          <Progress value={progress} className="h-1.5" />
+          <Progress value={progress} className="h-2" />
         </div>
 
-        <div className="space-y-5">
+        <div className="space-y-4 sm:space-y-5">
           {positions.map((pos, idx) => {
             const done = !!selections[pos.id];
             const posCandidates = candidates.filter((c) => c.position_id === pos.id);
             return (
-              <Card id={`pos-${pos.id}`} key={pos.id} className="p-5 sm:p-6 scroll-mt-32">
-                <div className="flex items-start justify-between gap-3 mb-1">
-                  <div>
-                    <div className="flex items-center gap-2 mb-1">
+              <Card id={`pos-${pos.id}`} key={pos.id} className="p-4 sm:p-6 scroll-mt-32">
+                <div className="flex items-start justify-between gap-3 mb-1 flex-wrap">
+                  <div className="min-w-0 flex-1">
+                    <div className="flex items-center gap-2 mb-1 flex-wrap">
                       <span className="text-xs font-mono text-muted-foreground">{String(idx + 1).padStart(2, "0")}</span>
-                      <h2 className="text-lg sm:text-xl font-semibold">{pos.title}</h2>
+                      <h2 className="text-lg sm:text-xl font-semibold break-words">{pos.title}</h2>
                     </div>
-                    {pos.description && <p className="text-sm text-muted-foreground">{pos.description}</p>}
+                    {pos.description && <p className="text-sm text-muted-foreground break-words">{pos.description}</p>}
                   </div>
                   {done ? (
-                    <Badge className="bg-success/15 text-success border-success/30 hover:bg-success/15">
+                    <Badge className="bg-success/15 text-success border-success/30 hover:bg-success/15 shrink-0">
                       <CheckCircle2 className="h-3 w-3 mr-1" />Selected
                     </Badge>
                   ) : (
-                    <Badge variant="outline" className="text-muted-foreground">Pending</Badge>
+                    <Badge variant="outline" className="text-muted-foreground shrink-0">Pending</Badge>
                   )}
                 </div>
 
@@ -226,26 +228,40 @@ const Ballot = () => {
                   onValueChange={(v) => setSelections({ ...selections, [pos.id]: v })}
                   className="grid sm:grid-cols-2 gap-3 mt-4"
                 >
-                  {posCandidates.map((c) => (
-                    <Label
-                      key={c.id}
-                      htmlFor={c.id}
-                      className="group flex gap-3 p-4 rounded-lg border-2 cursor-pointer transition-all hover:border-primary/50 hover:bg-accent/30 has-[:checked]:border-primary has-[:checked]:bg-primary/5 has-[:checked]:shadow-sm"
-                    >
-                      <RadioGroupItem id={c.id} value={c.id} className="mt-1" />
-                      <Avatar className="h-11 w-11">
-                        {c.photo_url && <AvatarImage src={c.photo_url} />}
-                        <AvatarFallback className="bg-primary/10 text-primary font-semibold">
-                          {c.name.charAt(0)}
-                        </AvatarFallback>
-                      </Avatar>
-                      <div className="flex-1 min-w-0">
-                        <div className="font-semibold truncate">{c.name}</div>
-                        {c.bio && <div className="text-xs text-muted-foreground line-clamp-1">{c.bio}</div>}
-                        {c.manifesto && <div className="text-xs mt-1 line-clamp-2 text-muted-foreground">{c.manifesto}</div>}
-                      </div>
-                    </Label>
-                  ))}
+                  {posCandidates.map((c) => {
+                    const selected = selections[pos.id] === c.id;
+                    return (
+                      <Label
+                        key={c.id}
+                        htmlFor={c.id}
+                        className={cn(
+                          "relative flex gap-3 p-4 rounded-xl border-2 cursor-pointer transition-all min-h-[88px]",
+                          "hover:border-primary/50 hover:bg-accent/30",
+                          selected ? "border-primary bg-primary/5 shadow-sm" : "border-border",
+                        )}
+                      >
+                        <RadioGroupItem id={c.id} value={c.id} className="mt-1 shrink-0" />
+                        <Avatar className="h-12 w-12 shrink-0">
+                          {c.photo_url && <AvatarImage src={c.photo_url} />}
+                          <AvatarFallback className="bg-primary/10 text-primary font-semibold">
+                            {c.name.charAt(0)}
+                          </AvatarFallback>
+                        </Avatar>
+                        <div className="flex-1 min-w-0">
+                          <div className="flex items-center gap-2 flex-wrap">
+                            <span className="font-semibold break-words">{c.name}</span>
+                            {selected && (
+                              <Badge className="bg-primary text-primary-foreground text-[10px] h-5 px-1.5">
+                                <CheckCircle2 className="h-3 w-3 mr-0.5" />Selected
+                              </Badge>
+                            )}
+                          </div>
+                          {c.bio && <div className="text-xs text-muted-foreground line-clamp-1 mt-0.5">{c.bio}</div>}
+                          {c.manifesto && <div className="text-xs mt-1 line-clamp-2 text-muted-foreground">{c.manifesto}</div>}
+                        </div>
+                      </Label>
+                    );
+                  })}
                   {posCandidates.length === 0 && (
                     <p className="text-sm text-muted-foreground col-span-full">No candidates for this position.</p>
                   )}
@@ -255,39 +271,49 @@ const Ballot = () => {
           })}
         </div>
 
-        <Card className="mt-6 p-5 flex items-center justify-between gap-4 flex-wrap bg-muted/30">
+        <Card className="mt-6 p-4 sm:p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4 bg-muted/30">
           <div className="flex items-start gap-2 text-xs text-muted-foreground">
             <ShieldCheck className="h-4 w-4 text-success shrink-0 mt-0.5" />
             <span>Your selections are cryptographically tied to your account. You will receive a verifiable receipt.</span>
           </div>
-          <Button size="lg" onClick={tryReview} disabled={submitting} className="ml-auto">
+          <Button size="lg" onClick={tryReview} disabled={submitting} className="w-full sm:w-auto min-h-12 sm:ml-auto">
             Review & submit <ChevronDown className="h-4 w-4 ml-1 rotate-[-90deg]" />
           </Button>
         </Card>
 
         <AlertDialog open={confirmOpen} onOpenChange={setConfirmOpen}>
-          <AlertDialogContent>
+          <AlertDialogContent className="max-w-lg">
             <AlertDialogHeader>
-              <AlertDialogTitle>Confirm your ballot</AlertDialogTitle>
+              <AlertDialogTitle className="text-xl sm:text-2xl">Confirm your vote</AlertDialogTitle>
               <AlertDialogDescription>
-                Review your choices below. Once submitted, your vote cannot be changed.
+                Please review your selections below before submitting.
               </AlertDialogDescription>
             </AlertDialogHeader>
-            <div className="space-y-2 max-h-64 overflow-y-auto -mx-1 px-1">
+            <div className="space-y-2 max-h-72 overflow-y-auto -mx-1 px-1">
               {positions.map((p) => {
                 const c = candidates.find((x) => x.id === selections[p.id]);
                 return (
-                  <div key={p.id} className="flex items-center justify-between gap-3 text-sm rounded-md border p-3">
-                    <span className="text-muted-foreground">{p.title}</span>
-                    <span className="font-semibold text-right">{c?.name}</span>
+                  <div key={p.id} className="flex items-center justify-between gap-3 text-sm rounded-lg border p-3 bg-muted/30">
+                    <div className="min-w-0">
+                      <p className="text-xs text-muted-foreground uppercase tracking-wide">Position</p>
+                      <p className="font-medium truncate">{p.title}</p>
+                    </div>
+                    <div className="text-right min-w-0">
+                      <p className="text-xs text-muted-foreground uppercase tracking-wide">Selected</p>
+                      <p className="font-semibold truncate">{c?.name}</p>
+                    </div>
                   </div>
                 );
               })}
             </div>
-            <AlertDialogFooter>
-              <AlertDialogCancel>Keep editing</AlertDialogCancel>
-              <AlertDialogAction onClick={submit} disabled={submitting}>
-                {submitting ? "Submitting..." : "Cast my vote"}
+            <div className="rounded-md border border-amber-500/30 bg-amber-500/5 p-3 text-xs text-amber-700 dark:text-amber-400 flex items-start gap-2">
+              <ShieldCheck className="h-4 w-4 mt-0.5 shrink-0" />
+              <span>Votes cannot be changed after submission.</span>
+            </div>
+            <AlertDialogFooter className="flex-col-reverse sm:flex-row gap-2">
+              <AlertDialogCancel className="min-h-11 mt-0">Cancel</AlertDialogCancel>
+              <AlertDialogAction onClick={submit} disabled={submitting} className="min-h-11 bg-primary hover:bg-primary/90 text-base font-semibold">
+                {submitting ? "Submitting..." : "Submit vote"}
               </AlertDialogAction>
             </AlertDialogFooter>
           </AlertDialogContent>
