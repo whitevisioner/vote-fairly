@@ -87,24 +87,60 @@ const Ballot = () => {
     };
     return (
       <Layout>
-        <div className="container mx-auto px-4 py-10 sm:py-16 max-w-xl">
+        <div className="container mx-auto px-4 py-8 sm:py-16 max-w-2xl">
           <VoteStepper current="results" />
-          <Card className="p-8 sm:p-10 text-center shadow-sm">
-            <div className="h-16 w-16 rounded-full bg-success/10 flex items-center justify-center mx-auto mb-4">
-              <CheckCircle2 className="h-9 w-9 text-success" />
+          <Card className="overflow-hidden shadow-sm">
+            <div className="px-6 sm:px-10 pt-10 pb-8 text-center bg-gradient-to-b from-success/5 to-transparent border-b">
+              <div className="relative mx-auto mb-5 h-20 w-20">
+                <div className="absolute inset-0 rounded-full bg-success/15 animate-ping" />
+                <div className="relative h-20 w-20 rounded-full bg-success/15 flex items-center justify-center mx-auto">
+                  <CheckCircle2 className="h-11 w-11 text-success" />
+                </div>
+              </div>
+              <h2 className="text-2xl sm:text-3xl font-bold mb-2 tracking-tight">Vote recorded</h2>
+              <p className="text-muted-foreground text-sm sm:text-base max-w-md mx-auto">
+                Thank you for participating in <span className="font-medium text-foreground">{election?.title}</span>.
+              </p>
             </div>
-            <h2 className="text-2xl sm:text-3xl font-bold mb-2">Your vote is recorded</h2>
-            <p className="text-muted-foreground mb-6">Thank you for participating in {election?.title}.</p>
-            <div className="bg-muted/40 rounded-xl p-4 mb-4 inline-block border">
-              <QRCodeSVG value={verifyUrl} size={140} />
-            </div>
-            <p className="text-xs text-muted-foreground mb-1">Receipt ID</p>
-            <p className="font-mono text-sm font-semibold mb-1">{receiptId}</p>
-            <p className="text-xs text-muted-foreground mb-6">{new Date(receiptTs).toLocaleString()}</p>
-            <div className="flex gap-2 justify-center flex-wrap">
-              <Button variant="outline" onClick={downloadReceipt}><Download className="h-4 w-4 mr-1.5" />Receipt</Button>
-              <Button asChild variant="outline"><Link to="/dashboard">Dashboard</Link></Button>
-              <Button asChild><Link to={`/election/${id}/results`}>See results</Link></Button>
+
+            <div className="p-6 sm:p-10">
+              <div className="grid sm:grid-cols-[auto_1fr] gap-6 items-center mb-6">
+                <div className="bg-background rounded-xl p-3 border mx-auto sm:mx-0">
+                  <QRCodeSVG value={verifyUrl} size={130} />
+                </div>
+                <div className="space-y-3 text-sm">
+                  <div>
+                    <p className="text-xs text-muted-foreground uppercase tracking-wide">Receipt ID</p>
+                    <p className="font-mono font-semibold text-base break-all">{receiptId}</p>
+                  </div>
+                  <div>
+                    <p className="text-xs text-muted-foreground uppercase tracking-wide">Election</p>
+                    <p className="font-medium break-words">{election?.title}</p>
+                  </div>
+                  <div>
+                    <p className="text-xs text-muted-foreground uppercase tracking-wide">Timestamp</p>
+                    <p className="font-medium">{new Date(receiptTs).toLocaleString()}</p>
+                  </div>
+                </div>
+              </div>
+
+              <div className="rounded-lg bg-muted/40 border p-4 mb-6">
+                <div className="flex items-start gap-2.5">
+                  <ShieldCheck className="h-4 w-4 text-success mt-0.5 shrink-0" />
+                  <div className="text-xs text-muted-foreground">
+                    <p className="font-medium text-foreground mb-0.5">How to verify</p>
+                    Scan the QR code or share the receipt ID with the election administrator. Receipts are tamper-evident and linked to the published results.
+                  </div>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
+                <Button variant="outline" onClick={downloadReceipt} className="min-h-11">
+                  <Download className="h-4 w-4 mr-1.5" />Receipt
+                </Button>
+                <Button asChild variant="outline" className="min-h-11"><Link to="/dashboard">Dashboard</Link></Button>
+                <Button asChild className="min-h-11"><Link to={`/election/${id}/results`}>View results</Link></Button>
+              </div>
             </div>
           </Card>
         </div>
