@@ -162,33 +162,33 @@ const Dashboard = () => {
           {elections.length === 0 ? (
             <Card className="p-8 text-center text-muted-foreground">No elections yet.</Card>
           ) : (
-            <div className="grid gap-3">
+            <div className="grid gap-3 sm:gap-4">
               {elections.map((e) => {
                 const hasVoted = voted.has(e.id);
                 return (
-                  <Card key={e.id} className="p-5">
-                    <div className="flex items-start justify-between gap-4 flex-wrap">
+                  <Card key={e.id} className="p-4 sm:p-5 hover:shadow-md transition-shadow">
+                    <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
                       <div className="flex-1 min-w-0">
-                        <div className="flex items-center gap-2 mb-1 flex-wrap">
-                          <h3 className="text-lg font-semibold">{e.title}</h3>
+                        <div className="flex items-center gap-2 mb-2 flex-wrap">
                           <Badge className={statusColors[e.status]}>{e.status}</Badge>
                           {hasVoted && <Badge variant="outline">Voted</Badge>}
                         </div>
-                        {e.description && <p className="text-sm text-muted-foreground mb-2 line-clamp-2">{e.description}</p>}
+                        <h3 className="text-base sm:text-lg font-semibold leading-snug break-words mb-1.5">{e.title}</h3>
+                        {e.description && <p className="text-sm text-muted-foreground mb-2 line-clamp-2 break-words">{e.description}</p>}
                         {(e.start_at || e.end_at) && (
-                          <p className="text-xs text-muted-foreground flex items-center gap-1">
-                            <CalendarDays className="h-3 w-3" />
+                          <p className="text-xs text-muted-foreground flex items-center gap-1 flex-wrap">
+                            <CalendarDays className="h-3 w-3 shrink-0" />
                             {e.start_at && format(new Date(e.start_at), "PP")}
-                            {e.end_at && ` → ${format(new Date(e.end_at), "PP")}`}
+                            {e.end_at && <span>→ {format(new Date(e.end_at), "PP")}</span>}
                           </p>
                         )}
                       </div>
-                      <div className="flex gap-2">
-                        <Button variant="outline" size="sm" asChild>
-                          <Link to={`/election/${e.id}/results`}><BarChart3 className="h-4 w-4 mr-1" />Results</Link>
+                      <div className="flex flex-col-reverse xs:flex-row sm:flex-row gap-2 sm:shrink-0 sm:items-start">
+                        <Button variant="outline" asChild className="min-h-11 w-full sm:w-auto">
+                          <Link to={`/election/${e.id}/results`}><BarChart3 className="h-4 w-4 mr-1.5" />Results</Link>
                         </Button>
                         {e.status === "open" && !hasVoted && (
-                          <Button size="sm" asChild>
+                          <Button asChild className="min-h-11 w-full sm:w-auto">
                             <Link to={`/election/${e.id}/code`}>Vote <ArrowRight className="h-4 w-4 ml-1" /></Link>
                           </Button>
                         )}
