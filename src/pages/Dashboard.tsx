@@ -183,7 +183,7 @@ const Dashboard = () => {
                           </p>
                         )}
                       </div>
-                      <div className="flex flex-col-reverse xs:flex-row sm:flex-row gap-2 sm:shrink-0 sm:items-start">
+                      <div className="flex flex-col sm:flex-row gap-2 sm:shrink-0 sm:items-start">
                         <Button variant="outline" asChild className="min-h-11 w-full sm:w-auto">
                           <Link to={`/election/${e.id}/results`}><BarChart3 className="h-4 w-4 mr-1.5" />Results</Link>
                         </Button>
