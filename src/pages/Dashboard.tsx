@@ -87,7 +87,7 @@ const Dashboard = () => {
 
   return (
     <Layout>
-      <div className="container mx-auto px-4 py-10 max-w-6xl space-y-8">
+      <div className="container mx-auto px-4 py-6 sm:py-10 max-w-6xl space-y-6 sm:space-y-8">
         {isDemo && (
           <>
             {/* Org header */}
