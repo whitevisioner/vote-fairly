@@ -29,6 +29,7 @@ const Overview = () => {
   const [voterCount, setVoterCount] = useState(0);
   const [voteCount, setVoteCount] = useState(0);
   const [activity, setActivity] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     (async () => {
@@ -42,6 +43,7 @@ const Overview = () => {
       setVoterCount(vc ?? 0);
       setVoteCount(vtc ?? 0);
       setActivity(logs ?? []);
+      setLoading(false);
     })();
   }, []);
 
