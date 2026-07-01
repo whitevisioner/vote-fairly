@@ -173,13 +173,13 @@ const Results = () => {
 };
 
 const Tile = ({ icon: Icon, label, value, truncate }: any) => (
-  <Card className="border-border/60">
-    <CardContent className="p-4">
-      <div className="flex items-center justify-between mb-2">
-        <span className="text-xs text-muted-foreground font-medium uppercase tracking-wide">{label}</span>
+  <Card className="border-border/60 h-full transition-shadow hover:shadow-sm">
+    <CardContent className="p-4 h-full flex flex-col justify-between gap-3">
+      <div className="flex items-center justify-between">
+        <span className="text-[11px] text-muted-foreground font-medium uppercase tracking-wide">{label}</span>
         <Icon className="h-4 w-4 text-muted-foreground" />
       </div>
-      <div className={cn("text-2xl font-semibold tabular-nums", truncate && "truncate text-lg")}>{value}</div>
+      <div className={cn("text-2xl font-semibold tabular-nums leading-none", truncate && "truncate text-lg")}>{value}</div>
     </CardContent>
   </Card>
 );
