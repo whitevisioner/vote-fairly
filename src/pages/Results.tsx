@@ -243,10 +243,31 @@ const Results = () => {
                   )}
                 </div>
 
+                {/* Result insights strip */}
+                {total > 0 && (
+                  <div className="grid grid-cols-3 divide-x border-b bg-background">
+                    <div className="p-3 sm:p-4 text-center">
+                      <p className="text-[10px] sm:text-xs uppercase tracking-wide text-muted-foreground">Lead margin</p>
+                      <p className="text-base sm:text-lg font-bold tabular-nums mt-0.5">
+                        {lead} <span className="text-xs font-normal text-muted-foreground">votes</span>
+                      </p>
+                    </div>
+                    <div className="p-3 sm:p-4 text-center">
+                      <p className="text-[10px] sm:text-xs uppercase tracking-wide text-muted-foreground">Participation</p>
+                      <p className="text-base sm:text-lg font-bold tabular-nums mt-0.5">{turnout}%</p>
+                    </div>
+                    <div className="p-3 sm:p-4 text-center">
+                      <p className="text-[10px] sm:text-xs uppercase tracking-wide text-muted-foreground">Status</p>
+                      <p className="text-base sm:text-lg font-bold capitalize mt-0.5">{election?.status ?? "—"}</p>
+                    </div>
+                  </div>
+                )}
+
                 <Tabs defaultValue="bars" className="p-5 sm:p-6">
-                  <TabsList className="mb-4">
+                  <TabsList className="mb-4 flex-wrap h-auto">
                     <TabsTrigger value="bars">Leaderboard</TabsTrigger>
-                    <TabsTrigger value="chart">Chart</TabsTrigger>
+                    <TabsTrigger value="chart">Bar</TabsTrigger>
+                    <TabsTrigger value="donut">Donut</TabsTrigger>
                     <TabsTrigger value="seats">Seats</TabsTrigger>
                   </TabsList>
 
