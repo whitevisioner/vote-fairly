@@ -232,18 +232,18 @@ const Elections = () => {
             ) : (
               <>
                 {/* Mobile cards */}
-                <div className="grid sm:hidden gap-2">
+                <div className="grid sm:hidden gap-2.5">
                   {paged.map((e) => (
-                    <div key={e.id} className="rounded-lg border border-border/60 p-3">
+                    <div key={e.id} className="rounded-lg border border-border/60 p-3 flex flex-col h-full">
                       <div className="flex items-start justify-between gap-2 mb-1">
-                        <Link to={`/admin/election/${e.id}`} className="font-medium text-sm truncate hover:underline">
+                        <Link to={`/admin/election/${e.id}`} className="font-medium text-sm break-words hover:underline flex-1 min-w-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded">
                           {e.title}
                         </Link>
                         <Badge variant="outline" className={cn("capitalize text-[10px] shrink-0", statusStyle[e.status])}>{e.status}</Badge>
                       </div>
-                      {e.description && <p className="text-xs text-muted-foreground line-clamp-2">{e.description}</p>}
-                      <div className="mt-2 flex gap-2">
-                        <Button variant="outline" size="sm" asChild className="flex-1"><Link to={`/admin/election/${e.id}`}>Manage</Link></Button>
+                      {e.description && <p className="text-xs text-muted-foreground line-clamp-2 flex-1">{e.description}</p>}
+                      <div className="mt-3 flex gap-2">
+                        <Button variant="outline" size="sm" asChild className="flex-1 min-h-11"><Link to={`/admin/election/${e.id}`}>Manage</Link></Button>
                         <RowMenu e={e} onDuplicate={duplicate} onArchive={archive} onDelete={setDeleteTarget} />
                       </div>
                     </div>
