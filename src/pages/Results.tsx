@@ -323,6 +323,35 @@ const Results = () => {
                     </div>
                   </TabsContent>
 
+                  <TabsContent value="donut" className="mt-0">
+                    <div className="h-64">
+                      <ResponsiveContainer>
+                        <PieChart>
+                          <Pie
+                            data={colored}
+                            dataKey="votes"
+                            nameKey="name"
+                            innerRadius={55}
+                            outerRadius={90}
+                            paddingAngle={2}
+                            stroke="hsl(var(--background))"
+                          >
+                            {colored.map((c, i) => <Cell key={i} fill={c.fill} />)}
+                          </Pie>
+                          <Tooltip
+                            contentStyle={{
+                              background: "hsl(var(--card))",
+                              border: "1px solid hsl(var(--border))",
+                              borderRadius: 8,
+                              fontSize: 12,
+                            }}
+                          />
+                          <Legend wrapperStyle={{ fontSize: 12 }} />
+                        </PieChart>
+                      </ResponsiveContainer>
+                    </div>
+                  </TabsContent>
+
                   <TabsContent value="seats" className="mt-0">
                     <p className="text-xs text-center text-muted-foreground mb-2">Parliament seat distribution</p>
                     <ParliamentChart data={data.map((d) => ({ name: d.name, votes: d.votes, color: "" }))} totalSeats={60} />
