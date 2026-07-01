@@ -120,8 +120,15 @@ const Overview = () => {
                     <Badge variant="outline" className={cn("capitalize shrink-0", statusStyle[e.status])}>{e.status}</Badge>
                   </Link>
                 ))}
-                {elections.length === 0 && (
-                  <p className="text-sm text-muted-foreground py-4 text-center">No elections yet.</p>
+                {elections.length === 0 && !loading && (
+                  <div className="border border-dashed border-border rounded-lg p-8 text-center">
+                    <div className="mx-auto h-10 w-10 rounded-lg bg-secondary flex items-center justify-center mb-3">
+                      <Vote className="h-5 w-5 text-muted-foreground" />
+                    </div>
+                    <p className="text-sm font-medium">No elections yet</p>
+                    <p className="text-xs text-muted-foreground mt-1 mb-3">Create one to start collecting votes.</p>
+                    <Button size="sm" asChild><Link to="/admin/elections"><Plus className="h-3.5 w-3.5" />New election</Link></Button>
+                  </div>
                 )}
               </div>
             </CardContent>
@@ -132,8 +139,17 @@ const Overview = () => {
               <CardTitle className="text-base">Recent activity</CardTitle>
             </CardHeader>
             <CardContent className="space-y-2.5">
-              {activity.length === 0 && (
-                <p className="text-sm text-muted-foreground">No activity yet.</p>
+              {loading && Array.from({ length: 4 }).map((_, i) => (
+                <div key={i} className="animate-pulse border-l-2 border-border pl-3 py-0.5 space-y-1">
+                  <div className="h-3 w-32 bg-muted rounded" />
+                  <div className="h-2.5 w-20 bg-muted rounded" />
+                </div>
+              ))}
+              {!loading && activity.length === 0 && (
+                <div className="text-center py-6">
+                  <Clock className="h-8 w-8 mx-auto text-muted-foreground/50 mb-2" />
+                  <p className="text-sm text-muted-foreground">No activity yet.</p>
+                </div>
               )}
               {activity.map((log) => (
                 <div key={log.id} className="text-xs border-l-2 border-border pl-3 py-0.5">
