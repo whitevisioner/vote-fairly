@@ -43,11 +43,11 @@ export const AdminLayout = ({ children, title, breadcrumb, actions }: AdminLayou
           <main className="flex-1">
             {(title || actions) && (
               <div className="border-b border-border/60 bg-background">
-                <div className="px-4 sm:px-6 lg:px-8 py-6 flex items-start justify-between gap-4 flex-wrap max-w-7xl mx-auto w-full">
-                  <div>
-                    {title && <h1 className="text-2xl sm:text-3xl font-semibold tracking-tight">{title}</h1>}
+                <div className="px-4 sm:px-6 lg:px-8 py-5 sm:py-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 sm:gap-4 max-w-7xl mx-auto w-full">
+                  <div className="min-w-0">
+                    {title && <h1 className="text-2xl sm:text-3xl font-semibold tracking-tight truncate">{title}</h1>}
                   </div>
-                  {actions && <div className="flex items-center gap-2">{actions}</div>}
+                  {actions && <div className="flex items-center gap-2 w-full sm:w-auto min-w-0 [&>*]:w-full sm:[&>*]:w-auto">{actions}</div>}
                 </div>
               </div>
             )}

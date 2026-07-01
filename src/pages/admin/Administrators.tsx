@@ -56,12 +56,12 @@ const Administrators = () => {
           <CardHeader className="pb-3">
             <CardTitle className="text-base flex items-center gap-2"><UserPlus className="h-4 w-4" />Promote user to admin</CardTitle>
           </CardHeader>
-          <CardContent className="flex items-end gap-2 flex-wrap">
-            <div className="flex-1 min-w-[220px] space-y-1.5">
+          <CardContent className="flex flex-col sm:flex-row sm:items-end gap-3">
+            <div className="flex-1 min-w-0 space-y-1.5">
               <Label htmlFor="promote-email">Email</Label>
-              <Input id="promote-email" type="email" placeholder="user@example.com" value={email} onChange={(e) => setEmail(e.target.value)} />
+              <Input id="promote-email" type="email" placeholder="user@example.com" value={email} onChange={(e) => setEmail(e.target.value)} className="h-10" />
             </div>
-            <Button onClick={promote}>Promote</Button>
+            <Button onClick={promote} className="w-full sm:w-auto min-h-10">Promote</Button>
           </CardContent>
         </Card>
 
@@ -70,27 +70,49 @@ const Administrators = () => {
             <CardTitle className="text-base flex items-center gap-2"><Shield className="h-4 w-4" />Current administrators</CardTitle>
           </CardHeader>
           <CardContent className="space-y-2">
-            {admins.map((a) => (
-              <div key={a.id} className="flex items-center justify-between gap-3 p-3 rounded-lg border border-border/60">
-                <div className="min-w-0">
-                  <div className="font-medium truncate">{a.email}</div>
-                  {a.full_name && <div className="text-xs text-muted-foreground truncate">{a.full_name}</div>}
-                </div>
-                <div className="flex items-center gap-2 shrink-0">
-                  {a.email.toLowerCase() === SEED_ADMIN && <Badge variant="outline">Primary</Badge>}
+            {admins.map((a) => {
+              const isPrimary = a.email.toLowerCase() === SEED_ADMIN;
+              const isSelf = a.id === user?.id;
+              const displayName = a.full_name || a.email.split("@")[0];
+              const initials = displayName.slice(0, 2).toUpperCase();
+              return (
+                <div key={a.id} className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 p-3 rounded-lg border border-border/60 hover:border-border transition-colors">
+                  <div className="flex items-center gap-3 min-w-0 flex-1">
+                    <div className="h-10 w-10 rounded-full bg-gradient-to-br from-primary/20 to-primary/5 flex items-center justify-center text-sm font-semibold text-primary shrink-0" aria-hidden="true">
+                      {initials}
+                    </div>
+                    <div className="min-w-0 flex-1">
+                      <div className="flex items-center gap-2 flex-wrap">
+                        <span className="font-medium truncate">{displayName}</span>
+                        {isPrimary && (
+                          <Badge variant="outline" className="bg-primary/10 text-primary border-primary/20 text-[10px] px-1.5 py-0 h-4">Primary</Badge>
+                        )}
+                        {isSelf && (
+                          <Badge variant="outline" className="bg-secondary text-[10px] px-1.5 py-0 h-4">You</Badge>
+                        )}
+                      </div>
+                      <div className="text-xs text-muted-foreground truncate mt-0.5">{a.email}</div>
+                    </div>
+                  </div>
                   <Button
-                    variant="ghost"
+                    variant="outline"
                     size="sm"
-                    className="text-destructive hover:text-destructive"
-                    disabled={a.email.toLowerCase() === SEED_ADMIN || a.id === user?.id}
+                    aria-label={`Revoke admin for ${a.email}`}
+                    className="w-full sm:w-auto min-h-10 sm:min-h-9 text-destructive hover:text-destructive hover:bg-destructive/5 border-destructive/20 disabled:opacity-40"
+                    disabled={isPrimary || isSelf}
                     onClick={() => revoke(a)}
                   >
                     <ShieldOff className="h-4 w-4" />Revoke
                   </Button>
                 </div>
+              );
+            })}
+            {admins.length === 0 && (
+              <div className="border border-dashed border-border rounded-lg p-8 text-center">
+                <Shield className="h-8 w-8 mx-auto text-muted-foreground/50 mb-2" />
+                <p className="text-sm text-muted-foreground">No administrators yet.</p>
               </div>
-            ))}
-            {admins.length === 0 && <p className="text-sm text-muted-foreground">No administrators yet.</p>}
+            )}
           </CardContent>
         </Card>
       </AdminLayout>

@@ -185,15 +185,16 @@ const Elections = () => {
         }
       >
         <Card className="border-border/60">
-          <CardHeader className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 space-y-0 pb-4">
-            <div>
+          <CardHeader className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 space-y-0 pb-4 sticky top-14 z-20 bg-card/95 backdrop-blur border-b border-border/60 rounded-t-xl">
+            <div className="min-w-0">
               <CardTitle className="text-base">All elections</CardTitle>
               <p className="text-sm text-muted-foreground mt-0.5">Search, sort, and manage every election.</p>
             </div>
             <div className="flex items-center gap-2 w-full sm:w-auto">
               <div className="relative flex-1 sm:w-64">
-                <Search className="h-4 w-4 absolute left-2.5 top-1/2 -translate-y-1/2 text-muted-foreground" />
+                <Search className="h-4 w-4 absolute left-2.5 top-1/2 -translate-y-1/2 text-muted-foreground" aria-hidden="true" />
                 <Input
+                  aria-label="Search elections"
                   placeholder="Search elections…"
                   value={query}
                   onChange={(e) => { setQuery(e.target.value); setPage(1); }}
@@ -231,18 +232,18 @@ const Elections = () => {
             ) : (
               <>
                 {/* Mobile cards */}
-                <div className="grid sm:hidden gap-2">
+                <div className="grid sm:hidden gap-2.5">
                   {paged.map((e) => (
-                    <div key={e.id} className="rounded-lg border border-border/60 p-3">
+                    <div key={e.id} className="rounded-lg border border-border/60 p-3 flex flex-col h-full">
                       <div className="flex items-start justify-between gap-2 mb-1">
-                        <Link to={`/admin/election/${e.id}`} className="font-medium text-sm truncate hover:underline">
+                        <Link to={`/admin/election/${e.id}`} className="font-medium text-sm break-words hover:underline flex-1 min-w-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded">
                           {e.title}
                         </Link>
                         <Badge variant="outline" className={cn("capitalize text-[10px] shrink-0", statusStyle[e.status])}>{e.status}</Badge>
                       </div>
-                      {e.description && <p className="text-xs text-muted-foreground line-clamp-2">{e.description}</p>}
-                      <div className="mt-2 flex gap-2">
-                        <Button variant="outline" size="sm" asChild className="flex-1"><Link to={`/admin/election/${e.id}`}>Manage</Link></Button>
+                      {e.description && <p className="text-xs text-muted-foreground line-clamp-2 flex-1">{e.description}</p>}
+                      <div className="mt-3 flex gap-2">
+                        <Button variant="outline" size="sm" asChild className="flex-1 min-h-11"><Link to={`/admin/election/${e.id}`}>Manage</Link></Button>
                         <RowMenu e={e} onDuplicate={duplicate} onArchive={archive} onDelete={setDeleteTarget} />
                       </div>
                     </div>
@@ -299,14 +300,14 @@ const Elections = () => {
                   </Table>
                 </div>
 
-                <div className="flex items-center justify-between mt-3 text-xs text-muted-foreground">
+                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 mt-3 text-xs text-muted-foreground">
                   <div>Showing {paged.length} of {filtered.length}</div>
-                  <div className="flex items-center gap-1">
-                    <Button variant="outline" size="icon" className="h-7 w-7" disabled={page === 1} onClick={() => setPage((p) => p - 1)}>
+                  <div className="flex items-center justify-between sm:justify-end gap-1">
+                    <Button variant="outline" size="icon" aria-label="Previous page" className="h-8 w-8 min-h-8" disabled={page === 1} onClick={() => setPage((p) => p - 1)}>
                       <ChevronLeft className="h-3.5 w-3.5" />
                     </Button>
-                    <span className="px-2">Page {page} / {pageCount}</span>
-                    <Button variant="outline" size="icon" className="h-7 w-7" disabled={page === pageCount} onClick={() => setPage((p) => p + 1)}>
+                    <span className="px-2 tabular-nums">Page {page} / {pageCount}</span>
+                    <Button variant="outline" size="icon" aria-label="Next page" className="h-8 w-8 min-h-8" disabled={page === pageCount} onClick={() => setPage((p) => p + 1)}>
                       <ChevronRight className="h-3.5 w-3.5" />
                     </Button>
                   </div>
@@ -349,7 +350,7 @@ const Elections = () => {
 const RowMenu = ({ e, onDuplicate, onArchive, onDelete }: any) => (
   <DropdownMenu>
     <DropdownMenuTrigger asChild>
-      <Button variant="ghost" size="icon" className="h-8 w-8"><MoreHorizontal className="h-4 w-4" /></Button>
+      <Button variant="ghost" size="icon" aria-label="More actions" className="h-11 w-11 sm:h-8 sm:w-8"><MoreHorizontal className="h-4 w-4" /></Button>
     </DropdownMenuTrigger>
     <DropdownMenuContent align="end">
       <DropdownMenuItem asChild><Link to={`/election/${e.id}/results`}><Eye className="h-4 w-4 mr-2" />View results</Link></DropdownMenuItem>

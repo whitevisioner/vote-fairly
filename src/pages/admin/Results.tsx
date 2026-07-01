@@ -79,14 +79,20 @@ const Results = () => {
         title="Results"
         actions={
           <Select value={electionId} onValueChange={setElectionId}>
-            <SelectTrigger className="h-9 w-64"><SelectValue placeholder="Select election" /></SelectTrigger>
-            <SelectContent>
-              {elections.map((e) => <SelectItem key={e.id} value={e.id}>{e.title}</SelectItem>)}
+            <SelectTrigger className="h-10 w-full sm:w-72 max-w-full" aria-label="Select election">
+              <SelectValue placeholder="Select election" />
+            </SelectTrigger>
+            <SelectContent className="max-w-[calc(100vw-2rem)]">
+              {elections.map((e) => (
+                <SelectItem key={e.id} value={e.id}>
+                  <span className="truncate block max-w-[260px]">{e.title}</span>
+                </SelectItem>
+              ))}
             </SelectContent>
           </Select>
         }
       >
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 mb-6">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 mb-6 items-stretch">
           <Tile icon={CheckCircle2} label="Total votes" value={stats.total} />
           <Tile icon={Users} label="Turnout" value={`${stats.turnout}%`} />
           <Tile icon={PieChart} label="Participation" value={`${stats.participation}%`} />
@@ -127,13 +133,18 @@ const Results = () => {
                   const pct = totalP > 0 ? Math.round((c.count / totalP) * 100) : 0;
                   return (
                     <div key={c.id}>
-                      <div className="flex items-center justify-between text-sm mb-1">
-                        <span className={cn("font-medium", i === 0 && c.count > 0 && "text-emerald-600 dark:text-emerald-400")}>
+                      <div className="flex items-center justify-between gap-2 text-sm mb-1">
+                        <span className={cn("font-medium truncate", i === 0 && c.count > 0 && "text-emerald-600 dark:text-emerald-400")}>
                           {i + 1}. {c.name}
                         </span>
-                        <span className="text-muted-foreground tabular-nums">{c.count} · {pct}%</span>
+                        <span className="text-muted-foreground tabular-nums shrink-0">{c.count} · {pct}%</span>
                       </div>
-                      <Progress value={pct} className="h-1.5" />
+                      <div className="h-1.5 rounded-full bg-muted overflow-hidden">
+                        <div
+                          className={cn("h-full rounded-full transition-[width] duration-700 ease-out", i === 0 && c.count > 0 ? "bg-emerald-500" : "bg-primary/70")}
+                          style={{ width: `${pct}%` }}
+                        />
+                      </div>
                     </div>
                   );
                 })}
@@ -162,13 +173,13 @@ const Results = () => {
 };
 
 const Tile = ({ icon: Icon, label, value, truncate }: any) => (
-  <Card className="border-border/60">
-    <CardContent className="p-4">
-      <div className="flex items-center justify-between mb-2">
-        <span className="text-xs text-muted-foreground font-medium uppercase tracking-wide">{label}</span>
+  <Card className="border-border/60 h-full transition-shadow hover:shadow-sm">
+    <CardContent className="p-4 h-full flex flex-col justify-between gap-3">
+      <div className="flex items-center justify-between">
+        <span className="text-[11px] text-muted-foreground font-medium uppercase tracking-wide">{label}</span>
         <Icon className="h-4 w-4 text-muted-foreground" />
       </div>
-      <div className={cn("text-2xl font-semibold tabular-nums", truncate && "truncate text-lg")}>{value}</div>
+      <div className={cn("text-2xl font-semibold tabular-nums leading-none", truncate && "truncate text-lg")}>{value}</div>
     </CardContent>
   </Card>
 );

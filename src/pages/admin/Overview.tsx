@@ -29,6 +29,7 @@ const Overview = () => {
   const [voterCount, setVoterCount] = useState(0);
   const [voteCount, setVoteCount] = useState(0);
   const [activity, setActivity] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     (async () => {
@@ -42,6 +43,7 @@ const Overview = () => {
       setVoterCount(vc ?? 0);
       setVoteCount(vtc ?? 0);
       setActivity(logs ?? []);
+      setLoading(false);
     })();
   }, []);
 
@@ -67,12 +69,25 @@ const Overview = () => {
           </Button>
         }
       >
-        <div className="grid grid-cols-2 lg:grid-cols-5 gap-3 mb-6">
-          <Tile icon={Vote} label="Total elections" value={stats.total} />
-          <Tile icon={Activity} label="Active" value={stats.open} accent="text-emerald-600 dark:text-emerald-400" />
-          <Tile icon={Users} label="Registered voters" value={voterCount} />
-          <Tile icon={CheckCircle2} label="Votes cast" value={voteCount} />
-          <Tile icon={PieChart} label="Participation" value={`${stats.participation}%`} />
+        <div className="grid grid-cols-2 lg:grid-cols-5 gap-3 mb-6 items-stretch">
+          {loading ? (
+            Array.from({ length: 5 }).map((_, i) => (
+              <Card key={i} className="border-border/60 h-full animate-pulse">
+                <CardContent className="p-4 space-y-3">
+                  <div className="h-3 w-20 bg-muted rounded" />
+                  <div className="h-7 w-14 bg-muted rounded" />
+                </CardContent>
+              </Card>
+            ))
+          ) : (
+            <>
+              <Tile icon={Vote} label="Total elections" value={stats.total} trend={stats.total > 0 ? `${stats.total} active` : "None yet"} />
+              <Tile icon={Activity} label="Active" value={stats.open} accent="text-emerald-600 dark:text-emerald-400" trend={stats.open > 0 ? "Live now" : "0 open"} trendTone="emerald" />
+              <Tile icon={Users} label="Registered voters" value={voterCount} />
+              <Tile icon={CheckCircle2} label="Votes cast" value={voteCount} />
+              <Tile icon={PieChart} label="Participation" value={`${stats.participation}%`} trend={stats.participation >= 50 ? "Healthy turnout" : "Below target"} trendTone={stats.participation >= 50 ? "emerald" : "muted"} />
+            </>
+          )}
         </div>
 
         <div className="grid lg:grid-cols-3 gap-4">
@@ -105,8 +120,15 @@ const Overview = () => {
                     <Badge variant="outline" className={cn("capitalize shrink-0", statusStyle[e.status])}>{e.status}</Badge>
                   </Link>
                 ))}
-                {elections.length === 0 && (
-                  <p className="text-sm text-muted-foreground py-4 text-center">No elections yet.</p>
+                {elections.length === 0 && !loading && (
+                  <div className="border border-dashed border-border rounded-lg p-8 text-center">
+                    <div className="mx-auto h-10 w-10 rounded-lg bg-secondary flex items-center justify-center mb-3">
+                      <Vote className="h-5 w-5 text-muted-foreground" />
+                    </div>
+                    <p className="text-sm font-medium">No elections yet</p>
+                    <p className="text-xs text-muted-foreground mt-1 mb-3">Create one to start collecting votes.</p>
+                    <Button size="sm" asChild><Link to="/admin/elections"><Plus className="h-3.5 w-3.5" />New election</Link></Button>
+                  </div>
                 )}
               </div>
             </CardContent>
@@ -117,8 +139,17 @@ const Overview = () => {
               <CardTitle className="text-base">Recent activity</CardTitle>
             </CardHeader>
             <CardContent className="space-y-2.5">
-              {activity.length === 0 && (
-                <p className="text-sm text-muted-foreground">No activity yet.</p>
+              {loading && Array.from({ length: 4 }).map((_, i) => (
+                <div key={i} className="animate-pulse border-l-2 border-border pl-3 py-0.5 space-y-1">
+                  <div className="h-3 w-32 bg-muted rounded" />
+                  <div className="h-2.5 w-20 bg-muted rounded" />
+                </div>
+              ))}
+              {!loading && activity.length === 0 && (
+                <div className="text-center py-6">
+                  <Clock className="h-8 w-8 mx-auto text-muted-foreground/50 mb-2" />
+                  <p className="text-sm text-muted-foreground">No activity yet.</p>
+                </div>
               )}
               {activity.map((log) => (
                 <div key={log.id} className="text-xs border-l-2 border-border pl-3 py-0.5">
@@ -145,14 +176,24 @@ const Overview = () => {
   );
 };
 
-const Tile = ({ icon: Icon, label, value, accent }: any) => (
-  <Card className="border-border/60">
-    <CardContent className="p-4">
-      <div className="flex items-center justify-between mb-2">
-        <span className="text-xs text-muted-foreground font-medium uppercase tracking-wide">{label}</span>
+const Tile = ({ icon: Icon, label, value, accent, trend, trendTone }: any) => (
+  <Card className="border-border/60 h-full transition-shadow hover:shadow-sm">
+    <CardContent className="p-4 h-full flex flex-col justify-between gap-3">
+      <div className="flex items-center justify-between">
+        <span className="text-[11px] text-muted-foreground font-medium uppercase tracking-wide">{label}</span>
         <Icon className={cn("h-4 w-4 text-muted-foreground", accent)} />
       </div>
-      <div className={cn("text-2xl font-semibold tabular-nums", accent)}>{value}</div>
+      <div>
+        <div className={cn("text-2xl font-semibold tabular-nums leading-none", accent)}>{value}</div>
+        {trend && (
+          <div className={cn(
+            "text-[11px] mt-2 font-medium",
+            trendTone === "emerald" ? "text-emerald-600 dark:text-emerald-400" : "text-muted-foreground",
+          )}>
+            {trend}
+          </div>
+        )}
+      </div>
     </CardContent>
   </Card>
 );
