@@ -7,7 +7,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
-import { Bar, BarChart, ResponsiveContainer, XAxis, YAxis, Tooltip, CartesianGrid, Cell } from "recharts";
+import { Bar, BarChart, ResponsiveContainer, XAxis, YAxis, Tooltip, CartesianGrid, Cell, Pie, PieChart, Legend } from "recharts";
 import { ParliamentChart } from "@/components/ParliamentChart";
 import {
   ArrowLeft, Crown, Activity, Users, Vote as VoteIcon, ShieldCheck,
@@ -243,10 +243,31 @@ const Results = () => {
                   )}
                 </div>
 
+                {/* Result insights strip */}
+                {total > 0 && (
+                  <div className="grid grid-cols-3 divide-x border-b bg-background">
+                    <div className="p-3 sm:p-4 text-center">
+                      <p className="text-[10px] sm:text-xs uppercase tracking-wide text-muted-foreground">Lead margin</p>
+                      <p className="text-base sm:text-lg font-bold tabular-nums mt-0.5">
+                        {lead} <span className="text-xs font-normal text-muted-foreground">votes</span>
+                      </p>
+                    </div>
+                    <div className="p-3 sm:p-4 text-center">
+                      <p className="text-[10px] sm:text-xs uppercase tracking-wide text-muted-foreground">Participation</p>
+                      <p className="text-base sm:text-lg font-bold tabular-nums mt-0.5">{turnout}%</p>
+                    </div>
+                    <div className="p-3 sm:p-4 text-center">
+                      <p className="text-[10px] sm:text-xs uppercase tracking-wide text-muted-foreground">Status</p>
+                      <p className="text-base sm:text-lg font-bold capitalize mt-0.5">{election?.status ?? "—"}</p>
+                    </div>
+                  </div>
+                )}
+
                 <Tabs defaultValue="bars" className="p-5 sm:p-6">
-                  <TabsList className="mb-4">
+                  <TabsList className="mb-4 flex-wrap h-auto">
                     <TabsTrigger value="bars">Leaderboard</TabsTrigger>
-                    <TabsTrigger value="chart">Chart</TabsTrigger>
+                    <TabsTrigger value="chart">Bar</TabsTrigger>
+                    <TabsTrigger value="donut">Donut</TabsTrigger>
                     <TabsTrigger value="seats">Seats</TabsTrigger>
                   </TabsList>
 
@@ -298,6 +319,35 @@ const Results = () => {
                             {colored.map((c, i) => <Cell key={i} fill={c.fill} />)}
                           </Bar>
                         </BarChart>
+                      </ResponsiveContainer>
+                    </div>
+                  </TabsContent>
+
+                  <TabsContent value="donut" className="mt-0">
+                    <div className="h-64">
+                      <ResponsiveContainer>
+                        <PieChart>
+                          <Pie
+                            data={colored}
+                            dataKey="votes"
+                            nameKey="name"
+                            innerRadius={55}
+                            outerRadius={90}
+                            paddingAngle={2}
+                            stroke="hsl(var(--background))"
+                          >
+                            {colored.map((c, i) => <Cell key={i} fill={c.fill} />)}
+                          </Pie>
+                          <Tooltip
+                            contentStyle={{
+                              background: "hsl(var(--card))",
+                              border: "1px solid hsl(var(--border))",
+                              borderRadius: 8,
+                              fontSize: 12,
+                            }}
+                          />
+                          <Legend wrapperStyle={{ fontSize: 12 }} />
+                        </PieChart>
                       </ResponsiveContainer>
                     </div>
                   </TabsContent>
