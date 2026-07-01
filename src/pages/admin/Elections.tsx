@@ -300,14 +300,14 @@ const Elections = () => {
                   </Table>
                 </div>
 
-                <div className="flex items-center justify-between mt-3 text-xs text-muted-foreground">
+                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 mt-3 text-xs text-muted-foreground">
                   <div>Showing {paged.length} of {filtered.length}</div>
-                  <div className="flex items-center gap-1">
-                    <Button variant="outline" size="icon" className="h-7 w-7" disabled={page === 1} onClick={() => setPage((p) => p - 1)}>
+                  <div className="flex items-center justify-between sm:justify-end gap-1">
+                    <Button variant="outline" size="icon" aria-label="Previous page" className="h-8 w-8 min-h-8" disabled={page === 1} onClick={() => setPage((p) => p - 1)}>
                       <ChevronLeft className="h-3.5 w-3.5" />
                     </Button>
-                    <span className="px-2">Page {page} / {pageCount}</span>
-                    <Button variant="outline" size="icon" className="h-7 w-7" disabled={page === pageCount} onClick={() => setPage((p) => p + 1)}>
+                    <span className="px-2 tabular-nums">Page {page} / {pageCount}</span>
+                    <Button variant="outline" size="icon" aria-label="Next page" className="h-8 w-8 min-h-8" disabled={page === pageCount} onClick={() => setPage((p) => p + 1)}>
                       <ChevronRight className="h-3.5 w-3.5" />
                     </Button>
                   </div>
