@@ -133,13 +133,18 @@ const Results = () => {
                   const pct = totalP > 0 ? Math.round((c.count / totalP) * 100) : 0;
                   return (
                     <div key={c.id}>
-                      <div className="flex items-center justify-between text-sm mb-1">
-                        <span className={cn("font-medium", i === 0 && c.count > 0 && "text-emerald-600 dark:text-emerald-400")}>
+                      <div className="flex items-center justify-between gap-2 text-sm mb-1">
+                        <span className={cn("font-medium truncate", i === 0 && c.count > 0 && "text-emerald-600 dark:text-emerald-400")}>
                           {i + 1}. {c.name}
                         </span>
-                        <span className="text-muted-foreground tabular-nums">{c.count} · {pct}%</span>
+                        <span className="text-muted-foreground tabular-nums shrink-0">{c.count} · {pct}%</span>
                       </div>
-                      <Progress value={pct} className="h-1.5" />
+                      <div className="h-1.5 rounded-full bg-muted overflow-hidden">
+                        <div
+                          className={cn("h-full rounded-full transition-[width] duration-700 ease-out", i === 0 && c.count > 0 ? "bg-emerald-500" : "bg-primary/70")}
+                          style={{ width: `${pct}%` }}
+                        />
+                      </div>
                     </div>
                   );
                 })}
