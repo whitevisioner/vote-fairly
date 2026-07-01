@@ -176,14 +176,24 @@ const Overview = () => {
   );
 };
 
-const Tile = ({ icon: Icon, label, value, accent }: any) => (
-  <Card className="border-border/60">
-    <CardContent className="p-4">
-      <div className="flex items-center justify-between mb-2">
-        <span className="text-xs text-muted-foreground font-medium uppercase tracking-wide">{label}</span>
+const Tile = ({ icon: Icon, label, value, accent, trend, trendTone }: any) => (
+  <Card className="border-border/60 h-full transition-shadow hover:shadow-sm">
+    <CardContent className="p-4 h-full flex flex-col justify-between gap-3">
+      <div className="flex items-center justify-between">
+        <span className="text-[11px] text-muted-foreground font-medium uppercase tracking-wide">{label}</span>
         <Icon className={cn("h-4 w-4 text-muted-foreground", accent)} />
       </div>
-      <div className={cn("text-2xl font-semibold tabular-nums", accent)}>{value}</div>
+      <div>
+        <div className={cn("text-2xl font-semibold tabular-nums leading-none", accent)}>{value}</div>
+        {trend && (
+          <div className={cn(
+            "text-[11px] mt-2 font-medium",
+            trendTone === "emerald" ? "text-emerald-600 dark:text-emerald-400" : "text-muted-foreground",
+          )}>
+            {trend}
+          </div>
+        )}
+      </div>
     </CardContent>
   </Card>
 );
