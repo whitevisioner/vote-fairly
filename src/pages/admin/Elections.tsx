@@ -185,15 +185,16 @@ const Elections = () => {
         }
       >
         <Card className="border-border/60">
-          <CardHeader className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 space-y-0 pb-4">
-            <div>
+          <CardHeader className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 space-y-0 pb-4 sticky top-14 z-20 bg-card/95 backdrop-blur border-b border-border/60 rounded-t-xl">
+            <div className="min-w-0">
               <CardTitle className="text-base">All elections</CardTitle>
               <p className="text-sm text-muted-foreground mt-0.5">Search, sort, and manage every election.</p>
             </div>
             <div className="flex items-center gap-2 w-full sm:w-auto">
               <div className="relative flex-1 sm:w-64">
-                <Search className="h-4 w-4 absolute left-2.5 top-1/2 -translate-y-1/2 text-muted-foreground" />
+                <Search className="h-4 w-4 absolute left-2.5 top-1/2 -translate-y-1/2 text-muted-foreground" aria-hidden="true" />
                 <Input
+                  aria-label="Search elections"
                   placeholder="Search elections…"
                   value={query}
                   onChange={(e) => { setQuery(e.target.value); setPage(1); }}
