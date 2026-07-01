@@ -69,12 +69,25 @@ const Overview = () => {
           </Button>
         }
       >
-        <div className="grid grid-cols-2 lg:grid-cols-5 gap-3 mb-6">
-          <Tile icon={Vote} label="Total elections" value={stats.total} />
-          <Tile icon={Activity} label="Active" value={stats.open} accent="text-emerald-600 dark:text-emerald-400" />
-          <Tile icon={Users} label="Registered voters" value={voterCount} />
-          <Tile icon={CheckCircle2} label="Votes cast" value={voteCount} />
-          <Tile icon={PieChart} label="Participation" value={`${stats.participation}%`} />
+        <div className="grid grid-cols-2 lg:grid-cols-5 gap-3 mb-6 items-stretch">
+          {loading ? (
+            Array.from({ length: 5 }).map((_, i) => (
+              <Card key={i} className="border-border/60 h-full animate-pulse">
+                <CardContent className="p-4 space-y-3">
+                  <div className="h-3 w-20 bg-muted rounded" />
+                  <div className="h-7 w-14 bg-muted rounded" />
+                </CardContent>
+              </Card>
+            ))
+          ) : (
+            <>
+              <Tile icon={Vote} label="Total elections" value={stats.total} trend={stats.total > 0 ? `${stats.total} active` : "None yet"} />
+              <Tile icon={Activity} label="Active" value={stats.open} accent="text-emerald-600 dark:text-emerald-400" trend={stats.open > 0 ? "Live now" : "0 open"} trendTone="emerald" />
+              <Tile icon={Users} label="Registered voters" value={voterCount} />
+              <Tile icon={CheckCircle2} label="Votes cast" value={voteCount} />
+              <Tile icon={PieChart} label="Participation" value={`${stats.participation}%`} trend={stats.participation >= 50 ? "Healthy turnout" : "Below target"} trendTone={stats.participation >= 50 ? "emerald" : "muted"} />
+            </>
+          )}
         </div>
 
         <div className="grid lg:grid-cols-3 gap-4">
