@@ -79,14 +79,20 @@ const Results = () => {
         title="Results"
         actions={
           <Select value={electionId} onValueChange={setElectionId}>
-            <SelectTrigger className="h-9 w-64"><SelectValue placeholder="Select election" /></SelectTrigger>
-            <SelectContent>
-              {elections.map((e) => <SelectItem key={e.id} value={e.id}>{e.title}</SelectItem>)}
+            <SelectTrigger className="h-10 w-full sm:w-72 max-w-full" aria-label="Select election">
+              <SelectValue placeholder="Select election" />
+            </SelectTrigger>
+            <SelectContent className="max-w-[calc(100vw-2rem)]">
+              {elections.map((e) => (
+                <SelectItem key={e.id} value={e.id}>
+                  <span className="truncate block max-w-[260px]">{e.title}</span>
+                </SelectItem>
+              ))}
             </SelectContent>
           </Select>
         }
       >
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 mb-6">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 mb-6 items-stretch">
           <Tile icon={CheckCircle2} label="Total votes" value={stats.total} />
           <Tile icon={Users} label="Turnout" value={`${stats.turnout}%`} />
           <Tile icon={PieChart} label="Participation" value={`${stats.participation}%`} />
