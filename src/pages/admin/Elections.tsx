@@ -350,7 +350,7 @@ const Elections = () => {
 const RowMenu = ({ e, onDuplicate, onArchive, onDelete }: any) => (
   <DropdownMenu>
     <DropdownMenuTrigger asChild>
-      <Button variant="ghost" size="icon" className="h-8 w-8"><MoreHorizontal className="h-4 w-4" /></Button>
+      <Button variant="ghost" size="icon" aria-label="More actions" className="h-11 w-11 sm:h-8 sm:w-8"><MoreHorizontal className="h-4 w-4" /></Button>
     </DropdownMenuTrigger>
     <DropdownMenuContent align="end">
       <DropdownMenuItem asChild><Link to={`/election/${e.id}/results`}><Eye className="h-4 w-4 mr-2" />View results</Link></DropdownMenuItem>
